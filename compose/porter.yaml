@@ -1,0 +1,39 @@
+# This is a porter.yaml that exhibits how to use PORTER_DIND=true
+# to build and run Docker containers with Docker Compose.
+#
+# To build/run docker-compose containers (starts a custom nginx and a redis):
+#   PORTER_DIND=true porter install --debug
+#
+# To stop all containers:
+#   PORTER_DIND=true porter uninstall --debug
+#
+name: composerator
+version: 0.1.0
+description: My bundle
+tag: vdice/compose:v0.1.0
+
+# In custom Dockerfile (Dockerfile.tmpl), install Docker CLI + Docker Compose:
+#
+#   ENV DOCKER_VERSION="19.03.8"
+#   RUN apt-get update && apt-get install -y python3-pip wget && pip3 install --upgrade pip && \
+#         wget https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz && \
+#         tar -xvf docker-${DOCKER_VERSION}.tgz && \
+#         mv docker/docker /usr/bin/docker && \
+#         chmod +x /usr/bin/docker && \
+#         rm -rf docker/ docker-${DOCKER_VERSION}.tgz && \
+#         pip3 install docker-compose
+#
+dockerfile: Dockerfile.tmpl
+
+mixins:
+  - exec
+
+install:
+  - exec:
+      description: Docker compose up
+      command: ./compose/up.sh
+
+uninstall:
+  - exec:
+      description: Docker compose down
+      command: ./compose/down.sh
