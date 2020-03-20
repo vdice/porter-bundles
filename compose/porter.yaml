@@ -1,11 +1,11 @@
-# This is a porter.yaml that exhibits how to use PORTER_DIND=true
+# This is a porter.yaml that exhibits how to use PORTER_ALLOW_DOCKER_HOST_ACCESS=true
 # to build and run Docker containers with Docker Compose.
 #
 # To build/run docker-compose containers (starts a custom nginx and a redis):
-#   PORTER_DIND=true porter install --debug
+#   PORTER_ALLOW_DOCKER_HOST_ACCESS=true porter install --debug
 #
 # To stop all containers:
-#   PORTER_DIND=true porter uninstall --debug
+#   PORTER_ALLOW_DOCKER_HOST_ACCESS=true porter uninstall --debug
 #
 name: composerator
 version: 0.1.0

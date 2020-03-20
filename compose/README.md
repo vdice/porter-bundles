@@ -1,7 +1,7 @@
 Example bundle utilizing jdolitsky's work in https://github.com/deislabs/porter/pull/951
 
 ```console
- $ PORTER_DIND=true porter install
+ $ PORTER_ALLOW_DOCKER_HOST_ACCESS=true porter install
 installing composerator...
 executing install action from composerator (bundle instance: composerator)
 Docker compose up
@@ -21,7 +21,7 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 32d19346bd3a        redis:alpine        "docker-entrypoint.s…"   5 seconds ago       Up 4 seconds        6379/tcp               compose_redis_1
 b2cdd6629b2c        compose_web         "nginx -g 'daemon of…"   5 seconds ago       Up 4 seconds        0.0.0.0:8000->80/tcp   compose_web_1
 
- $ PORTER_DIND=true porter uninstall
+ $ PORTER_ALLOW_DOCKER_HOST_ACCESS=true porter uninstall
 uninstalling composerator...
 executing uninstall action from composerator (bundle instance: composerator)
 Docker compose down
