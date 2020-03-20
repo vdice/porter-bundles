@@ -1,0 +1,59 @@
+mixins:
+  - helm:
+      repositories:
+        brigadecore:
+          url: "https://brigadecore.github.io/charts"
+
+name: brigade
+version: 0.1.0
+tag: vdice/brigade:v0.1.0
+
+credentials:
+- name: kubeconfig
+  path: /root/.kube/config
+
+parameters:
+- name: namespace
+  type: string
+  default: ''
+- name: brigade-name
+  type: string
+  default: my-brigade
+
+customActions:
+  status:
+    description: "Get the status of a Helm release"
+    modifies: false
+    stateless: true
+
+install:
+  - helm:
+      description: "Install brigade"
+      name: "{{ bundle.parameters.brigade-name }}"
+      chart: brigadecore/brigade
+      namespace: "{{ bundle.parameters.namespace }}"
+
+status:
+  - helm:
+      description: "brigade Status"
+      arguments:
+        - status
+        - "{{ bundle.parameters.brigade-name }}"
+      flags:
+        o: yaml
+
+upgrade:
+  - helm:
+      description: "Upgrade brigade"
+      name: "{{ bundle.parameters.brigade-name }}"
+      namespace: "{{ bundle.parameters.namespace }}"
+      chart: brigadecore/brigade
+
+uninstall:
+  - helm:
+      description: "Uninstall brigade"
+      purge: true
+      releases:
+        - "{{ bundle.parameters.brigade-name }}"
+
+
