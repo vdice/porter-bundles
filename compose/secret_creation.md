@@ -1,6 +1,16 @@
 
 ```console
+$ export MY_SECRET="this is my secret"
+
 $ echo "this is my host secret" > /tmp/my_host_secret.txt
+
+$ export PORTER_ALLOW_DOCKER_HOST_ACCESS=true
+
+$ porter creds generate
+Generating new credential compose-example from bundle compose-example
+==> 1 credentials required for bundle compose-example
+? How would you like to set credential "docker_secret" environment variable
+? Enter the environment variable that will be used to set credential "docker_secret" MY_SECRET
 
 $ porter install -c compose-example
 installing compose-example...
