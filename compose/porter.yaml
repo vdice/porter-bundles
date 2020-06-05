@@ -1,39 +1,52 @@
-# This is a porter.yaml that exhibits how to use PORTER_ALLOW_DOCKER_HOST_ACCESS=true
+# This is a porter.yaml that exhibits how to use --allow-docker-host-access in Porter
 # to build and run Docker containers with Docker Compose.
 #
 # To build/run docker-compose containers (starts a custom nginx and a redis):
-#   PORTER_ALLOW_DOCKER_HOST_ACCESS=true porter install --debug
+#   porter install --allow-docker-host-access
 #
 # To stop all containers:
-#   PORTER_ALLOW_DOCKER_HOST_ACCESS=true porter uninstall --debug
+#   porter uninstall --allow-docker-host-access
 #
-name: composerator
+# Alternatively, one may `export PORTER_ALLOW_DOCKER_HOST_ACCESS` and then run as normal:
+#   porter install
+#
+name: compose-example
 version: 0.1.0
-description: My bundle
-tag: vdice/compose:v0.1.0
+description: A sample bundle using Docker Compose
+tag: vdice/compose-example:v0.1.0
 
-# In custom Dockerfile (Dockerfile.tmpl), install Docker CLI + Docker Compose:
-#
-#   ENV DOCKER_VERSION="19.03.8"
-#   RUN apt-get update && apt-get install -y python3-pip wget && pip3 install --upgrade pip && \
-#         wget https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz && \
-#         tar -xvf docker-${DOCKER_VERSION}.tgz && \
-#         mv docker/docker /usr/bin/docker && \
-#         chmod +x /usr/bin/docker && \
-#         rm -rf docker/ docker-${DOCKER_VERSION}.tgz && \
-#         pip3 install docker-compose
-#
-dockerfile: Dockerfile.tmpl
+required:
+  - docker
+
+credentials:
+  - name: docker_secret
+    # Here we tell Porter to export this secret as an env var in the invocation image
+    env: MY_SECRET
 
 mixins:
+  - docker-compose
   - exec
 
 install:
   - exec:
-      description: Docker compose up
-      command: ./compose/up.sh
+      description: "Create a docker secret"
+      command: ./create_secret.sh
+
+  - docker-compose:
+      description: "Docker compose up"
+      arguments:
+        - up
+        - -d
+
+ps:
+  - docker-compose:
+      description: "Docker compose ps"
+      arguments:
+        - ps
 
 uninstall:
-  - exec:
-      description: Docker compose down
-      command: ./compose/down.sh
+  - docker-compose:
+      description: "Docker compose down"
+      arguments:
+        - down
+        - --remove-orphans

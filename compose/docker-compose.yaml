@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+      - "8000:80"
+    secrets:
+      - my_host_secret
+      - my_created_secret
+    command: sh -c "cat /run/secrets/my_host_secret && cat /run/secrets/my_created_secret"
+  redis:
+    image: "redis:alpine"
+secrets:
+  my_host_secret:
+    # This represents the source path relative to the Docker daemon.
+    # In other words, NOT inside the invocation image if run in the context of a Porter bundle,
+    # if the bundle is using the host Docker daemon.
+    file: /tmp/my_host_secret.txt
+  my_created_secret:
+    external: true
