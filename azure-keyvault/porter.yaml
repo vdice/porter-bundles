@@ -1,0 +1,91 @@
+mixins:
+  - exec
+  - terraform
+
+name: porter-terraform-keyvault
+version: v0.1.0
+tag: localhost:5000/porter-terraform-keyvault:v0.1.0
+
+credentials:
+  - name: subscription_id
+    env: TF_VAR_subscription_id
+
+  - name: tenant_id
+    env: TF_VAR_tenant_id
+
+  - name: client_id
+    env: TF_VAR_client_id
+
+  - name: client_secret
+    env: TF_VAR_client_secret
+
+  - name: backend_storage_access_key
+    env: TF_VAR_backend_storage_access_key
+
+  - name: backend_storage_account
+    env: TF_VAR_backend_storage_account
+
+  - name: backend_storage_container
+    env: TF_VAR_backend_storage_container
+
+parameters:
+  - name: keyvault_name
+    type: string
+    env: TF_VAR_keyvault_name
+
+  - name: location
+    type: string
+    env: TF_VAR_location
+
+  - name: resource_group_name
+    type: string
+    env: TF_VAR_resource_group_name
+
+customActions:
+  show:
+    description: "Invoke 'terraform show'"
+    modifies: false
+
+install:
+  - terraform:
+      description: "Install Azure Key Vault"
+      input: false
+      backendConfig:
+        key: "{{ bundle.name }}.tfstate"
+        storage_account_name: "{{ bundle.credentials.backend_storage_account }}"
+        container_name: "{{ bundle.credentials.backend_storage_container }}"
+        access_key: "{{ bundle.credentials.backend_storage_access_key }}"
+      outputs:
+      - name: vault_uri
+
+upgrade:
+  - terraform:
+      description: "Upgrade Azure Key Vault"
+      input: false
+      backendConfig:
+        key: "{{ bundle.name }}.tfstate"
+        storage_account_name: "{{ bundle.credentials.backend_storage_account }}"
+        container_name: "{{ bundle.credentials.backend_storage_container }}"
+        access_key: "{{ bundle.credentials.backend_storage_access_key }}"
+      outputs:
+      - name: vault_uri
+
+show:
+  - terraform:
+      description: "Invoke 'terraform show'"
+      backendConfig:
+        key: "{{ bundle.name }}.tfstate"
+        storage_account_name: "{{ bundle.credentials.backend_storage_account }}"
+        container_name: "{{ bundle.credentials.backend_storage_container }}"
+        access_key: "{{ bundle.credentials.backend_storage_access_key }}"
+      outputs:
+      - name: vault_uri
+
+uninstall:
+  - terraform:
+      description: "Uninstall Azure Key Vault"
+      backendConfig:
+        key: "{{ bundle.name }}.tfstate"
+        storage_account_name: "{{ bundle.credentials.backend_storage_account }}"
+        container_name: "{{ bundle.credentials.backend_storage_container }}"
+        access_key: "{{ bundle.credentials.backend_storage_access_key }}"
