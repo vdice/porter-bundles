@@ -1,5 +1,5 @@
 {
-  "name": "porter-terraform-keyvault-secrets",
+  "name": "porter-terraform-keyvault-creds",
   "created": "2019-12-02T18:00:38.336577943-07:00",
   "modified": "2020-06-09T12:09:18.718515-06:00",
   "credentials": [
@@ -30,13 +30,13 @@
     {
       "name": "backend_storage_account",
       "source": {
-        "value": "vadice"
+        "value": "tfbackendaccount"
       }
     },
     {
       "name": "backend_storage_container",
       "source": {
-        "value": "tfbackend"
+        "value": "tfbackendcontainer"
       }
     },
     {

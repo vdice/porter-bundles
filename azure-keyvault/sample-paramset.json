@@ -1,5 +1,5 @@
 {
-  "name": "porter-terraform-keyvault-secrets",
+  "name": "porter-terraform-keyvault-params",
   "created": "2020-06-07T10:47:19.865722-06:00",
   "modified": "2020-06-09T12:02:03.61297-06:00",
   "parameters": [
