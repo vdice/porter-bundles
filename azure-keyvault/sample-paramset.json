@@ -12,7 +12,7 @@
     {
       "name": "location",
       "source": {
-        "secret": "porter-keyvault-location"
+        "value": "East US"
       }
     },
     {

@@ -24,19 +24,19 @@
     {
       "name": "subscription_id",
       "source": {
-        "secret": "porter-keyvault-subscription-id"
+        "env": "SUBSCRIPTION_ID"
       }
     },
     {
       "name": "backend_storage_account",
       "source": {
-        "secret": "porter-keyvault-backend-storage-account"
+        "value": "vadice"
       }
     },
     {
       "name": "backend_storage_container",
       "source": {
-        "secret": "porter-keyvault-backend-storage-container"
+        "value": "tfbackend"
       }
     },
     {
