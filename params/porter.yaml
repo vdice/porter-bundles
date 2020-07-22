@@ -1,0 +1,69 @@
+name: params
+version: 0.1.0
+description: "A bundle with different parameter types"
+tag: vdice.azurecr.io/params:v0.1.0
+
+parameters:
+  - name: ainteger
+    type: integer
+    default: 1
+    minimum: 0
+    maximum: 10
+  - name: astringenum
+    type: string
+    default: blue
+    enum:
+      - blue
+      - red
+      - purple
+      - pink
+  - name: astring
+    type: string
+    minLength: 1
+    maxLength: 10
+    default: "my string!"
+  - name: aboolean
+    type: boolean
+    default: true
+  - name: installonly
+    type: boolean
+    applyTo:
+      - install
+  - name: sensitive
+    type: string
+    sensitive: true
+  - name: jsonobject
+    type: string
+    default: '
+      "myobject": {
+        "foo": "true",
+        "bar": [
+          1,
+          2,
+          3
+        ]
+      }'
+
+mixins:
+  - exec
+
+install:
+  - exec:
+      description: "echo params"
+      command: bash
+      arguments:
+        - ./echo-params.sh
+
+upgrae:
+  - exec:
+      description: "echo params"
+      command: bash
+      arguments:
+        - ./echo-params.sh
+
+uninstall:
+  - exec:
+      description: "echo params"
+      command: bash
+      arguments:
+        - ./echo-params.sh
