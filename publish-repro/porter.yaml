@@ -1,0 +1,143 @@
+
+name: publish-repro
+version: 0.1.0
+description: "Bundle to repro publishing errors seen in https://github.com/deislabs/porter/issues/1224"
+tag: localhost:5000/publish-repro:0.1.0
+
+mixins:
+- exec
+- helm
+
+images:
+  metallb-speaker:
+    repository: "docker.io/metallb/speaker"
+    tag: "v0.9.3"
+
+  metallb-controller:
+    repository: "docker.io/metallb/controller"
+    tag: "v0.9.3"
+
+  nvidia-dcgm-exporter:
+    repository: "nvidia/dcgm-exporter"
+    tag: "1.4.6"
+
+  nginx-ingress-controller:
+    repository: "quay.io/kubernetes-ingress-controller/nginx-ingress-controller"
+    tag: "0.32.0"
+
+  prometheus:
+    repository: "quay.io/prometheus/prometheus"
+    tag: "v2.17.2"
+
+  prometheus-node-exporter:
+    repository: "quay.io/prometheus/node-exporter"
+    tag: "v0.18.0"
+
+  # fail
+  # level=error msg="canonical digest does match provided digest" canonical=sha256:6dc84e572802a52f838f67d010aa66d02e555e5784ed2f69633d45eda3b800aa
+  # level=error msg="response completed with error" err.code="digest invalid" err.detail="invalid digest for referenced layer: sha256:5e508e2e0aba161359caad284b6974fa11119a55c2d5786d024ad32cffc61634, content does not match digest" err.message="provided digest did not match uploaded content"
+  # prometheus-config-reloader:
+  #   repository: "quay.io/coreos/prometheus-config-reloader"
+  #   tag: "v0.31.1"
+
+  # fail
+  # level=error msg="canonical digest does match provided digest" canonical=sha256:d659343d2871535e86209421466e10489887435014b061551b2cc74138a16ebc
+  # level=error msg="response completed with error" err.code="digest invalid" err.detail="invalid digest for referenced layer: sha256:e2fd60ff0ae4500a75b80ebaa30e0e7deba9ad107833e8ca53f0047c42c5a057, content does not match digest" err.message="provided digest did not match uploaded content"
+  # prometheus-configmap-reload:
+  #   repository: "quay.io/coreos/configmap-reload"
+  #   tag: "v0.0.1"
+
+  prometheus-pushgateway:
+    repository: "prom/pushgateway"
+    tag: "v0.9.1"
+
+  # fail
+  # level=error msg="canonical digest does match provided digest" canonical=sha256:d4b756a74fa4833e66172575b4a6f2cbe51b4e55b01a14b57ac3844d9f922931
+  # level=error msg="response completed with error" err.code="digest invalid" err.detail="invalid digest for referenced layer: sha256:56958607ef98fee9f3a4f2de0998e54f192d33af391cae175241f1347060c8de, content does not match digest" err.message="provided digest did not match uploaded content"
+  # prometheus-operator:
+  #   repository: "quay.io/coreos/prometheus-operator"
+  #   tag: "v0.31.1"
+
+  # fail
+  # level=error msg="canonical digest does match provided digest" canonical=sha256:15b8c6de151aeffee493ac1e6dcc5a5bbeb336f1be0e212a5455204a0b987661
+  # level=error msg="response completed with error" err.code="digest invalid" err.detail="invalid digest for referenced layer: sha256:99a3e3297e281fec09fe850d6d4bccf4d9fd58ff62a5b37764d8a8bd1e79bd14, content does not match digest" err.message="provided digest did not match uploaded content"
+  # kube-state-metrics:
+  #   repository: "quay.io/coreos/kube-state-metrics"
+  #   tag: "v1.7.2"
+
+  # fail
+  # level=error msg="response completed with error" err.code=unknown err.message="invalid URL on layer"
+  # rancher-agent:
+  #   repository: "rancher/rancher-agent"
+  #   tag: "v2.3.5"
+
+  rancher:
+    repository: "rancher/rancher"
+    tag: "v2.3.5"
+
+  busybox:
+    repository: "busybox"
+    tag: "latest"
+
+  cert-manager-cainjector:
+    repository: "quay.io/jetstack/cert-manager-cainjector"
+    tag: "v0.12.0"
+
+  cert-manager-controller:
+    repository: "quay.io/jetstack/cert-manager-controller"
+    tag: "v0.12.0"
+
+  cert-manager-webhook:
+    repository: "quay.io/jetstack/cert-manager-webhook"
+    tag: "v0.12.0"
+
+  kube-webhook-certgen:
+    repository: "jettech/kube-webhook-certgen"
+    tag: "v1.0.0"
+
+  chartmuseum:
+    repository: "chartmuseum/chartmuseum"
+    tag: "v0.11.0"
+
+  local-path-provisioner:
+    repository: "rancher/local-path-provisioner"
+    tag: "v0.0.12"
+
+  defaultbackend-amd64:
+    repository: "k8s.gcr.io/defaultbackend-amd64"
+    tag: "1.5"
+
+  nginx:
+    repository: "nginx"
+    tag: "1.17.3-alpine"
+
+  kiwigrid-k8s-sidecar:
+    repository: "kiwigrid/k8s-sidecar"
+    tag: "0.1.20"
+
+  grafana:
+    repository: "grafana/grafana"
+    tag: "6.3.5"
+
+  squareup-ghostunnel:
+    repository: "squareup/ghostunnel"
+    tag: "v1.4.1"
+
+  debian-tall:
+    repository: "quay.io/gravitational/debian-tall"
+    tag: "stretch"
+
+
+install:
+  - exec:
+      description: "Echo Hello World"
+      command: bash
+      flags:
+        c: '"echo Hello World"'
+
+uninstall:
+  - exec:
+      description: "Echo Hello World"
+      command: bash
+      flags:
+        c: '"echo Hello World"'
