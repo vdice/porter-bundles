@@ -67,6 +67,7 @@ images:
 
   # fail
   # level=error msg="response completed with error" err.code=unknown err.message="invalid URL on layer"
+  # level=error msg="response completed with error" err.code="manifest blob unknown" err.detail=sha256:aeef11c1b4a67e94f1cec604aad417558d9795c165856f62eefaee4cede5eff4 err.message="blob unknown to registry"
   # rancher-agent:
   #   repository: "rancher/rancher-agent"
   #   tag: "v2.3.5"
