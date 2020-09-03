@@ -1,0 +1,1 @@
+A bundle for deploying a [Brigade GitHub App](https://github.com/brigadecore/brigade-github-app) gateway to Kubernetes via Helm.

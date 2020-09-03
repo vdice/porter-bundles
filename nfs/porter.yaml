@@ -1,0 +1,57 @@
+name: nfs
+description: "A Porter bundle to install the NFS Provisioner for k8s"
+version: 0.1.0
+tag: vdice/nfs
+
+mixins:
+  - helm3:
+      clientVersion: v3.3.1
+      repositories:
+        stable:
+          url: https://kubernetes-charts.storage.googleapis.com
+
+credentials:
+  - name: kubeconfig
+    path: /root/.kube/config
+
+parameters:
+  - name: chart-values
+    type: string
+    path: /cnab/app/chart-values.yaml
+    default: ''
+
+install:
+  - helm3:
+      description: "Helm Install NFS Provisioner"
+      name: nfs
+      chart: stable/nfs-server-provisioner
+      version: 1.1.1
+      wait: true
+      values:
+        - /cnab/app/chart-values.yaml
+
+upgrade:
+  - helm3:
+      description: "Helm Upgrade NFS Provisioner"
+      name: nfs
+      chart: stable/nfs-server-provisioner
+      version: 1.1.1
+      wait: true
+      values:
+        - /cnab/app/chart-values.yaml
+
+status:
+  - helm3:
+      description: "Check status of NFS Provisioner"
+      arguments:
+        - status
+        - nfs
+      flags:
+        o: yaml
+
+uninstall:
+  - helm3:
+      description: "Helm Uninstall NFS Provisioner"
+      purge: true
+      releases:
+        - nfs

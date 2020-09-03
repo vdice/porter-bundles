@@ -1,7 +1,7 @@
-name: brigade
-description: "A Porter bundle to deploy a Brigade server to Kubernetes via Helm"
+name: brigade-github-app
+description: "A Porter bundle to deploy a Brigade GitHub App Gateway to Kubernetes via Helm"
 version: 0.1.0
-tag: vdice/brigade:v0.1.0
+tag: vdice/brigade-github-app:v0.1.0
 
 mixins:
   - helm3:
@@ -24,38 +24,38 @@ parameters:
 
 install:
   - helm3:
-      description: "Install Brigade"
-      name: brigade
+      description: "Install Brigade GitHub App Gateway"
+      name: brigade-gh-app
       namespace: "{{ bundle.parameters.namespace }}"
-      chart: brigadecore/brigade
+      chart: brigadecore/brigade-github-app
       wait: true
       values:
         - /cnab/app/chart-values.yaml
 
 status:
   - helm3:
-      description: "Brigade Status"
+      description: "Brigade GitHub App Gateway Status"
       arguments:
         - status
-        - brigade
+        - brigade-gh-app
       flags:
         o: yaml
 
 upgrade:
   - helm3:
-      description: "Upgrade Brigade"
-      name: brigade
+      description: "Upgrade Brigade GitHub App Gateway"
+      name: brigade-gh-app
       namespace: "{{ bundle.parameters.namespace }}"
-      chart: brigadecore/brigade
+      chart: brigadecore/brigade-github-app
       wait: true
       values:
         - /cnab/app/chart-values.yaml
 
 uninstall:
   - helm3:
-      description: "Uninstall Brigade"
+      description: "Uninstall Brigade GitHub App Gateway"
       purge: true
       releases:
-        - brigade
+        - brigade-gh-app
 
 

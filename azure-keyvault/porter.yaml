@@ -4,7 +4,7 @@ mixins:
 
 name: porter-terraform-keyvault
 version: v0.1.0
-tag: localhost:5000/porter-terraform-keyvault:v0.1.0
+tag: vdice/porter-terraform-keyvault:v0.1.0
 
 credentials:
   - name: subscription_id

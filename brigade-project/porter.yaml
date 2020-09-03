@@ -1,7 +1,7 @@
-name: brigade
-description: "A Porter bundle to deploy a Brigade server to Kubernetes via Helm"
+name: brigade-project
+description: "A Porter bundle to deploy a Brigade project to Kubernetes via Helm"
 version: 0.1.0
-tag: vdice/brigade:v0.1.0
+tag: vdice/brigade-project:v0.1.0
 
 mixins:
   - helm3:
@@ -15,6 +15,8 @@ credentials:
     path: /root/.kube/config
 
 parameters:
+  - name: name
+    type: string
   - name: namespace
     type: string
     default: default
@@ -24,38 +26,38 @@ parameters:
 
 install:
   - helm3:
-      description: "Install Brigade"
-      name: brigade
+      description: "Install Brigade Project: {{ bundle.parameters.name }}"
+      name: "{{ bundle.parameters.name }}"
       namespace: "{{ bundle.parameters.namespace }}"
-      chart: brigadecore/brigade
+      chart: brigadecore/brigade-project
       wait: true
       values:
         - /cnab/app/chart-values.yaml
 
 status:
   - helm3:
-      description: "Brigade Status"
+      description: "Check status of Brigade Project: {{ bundle.parameters.name }}"
       arguments:
         - status
-        - brigade
+        - "{{ bundle.parameters.name }}"
       flags:
         o: yaml
 
 upgrade:
   - helm3:
-      description: "Upgrade Brigade"
-      name: brigade
+      description: "Upgrade Brigade Project: {{ bundle.parameters.name }}"
+      name: "{{ bundle.parameters.name }}"
       namespace: "{{ bundle.parameters.namespace }}"
-      chart: brigadecore/brigade
+      chart: brigadecore/brigade-project
       wait: true
       values:
         - /cnab/app/chart-values.yaml
 
 uninstall:
   - helm3:
-      description: "Uninstall Brigade"
+      description: "Uninstall Brigade Project: {{ bundle.parameters.name }}"
       purge: true
       releases:
-        - brigade
+        - "{{ bundle.parameters.name }}"
 
 

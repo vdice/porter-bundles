@@ -1,0 +1,58 @@
+name: nginx-ingress
+description: "A Porter bundle to install nginx-ingress for k8s"
+version: 0.1.0
+tag: vdice/nginx-ingress
+
+mixins:
+  - helm3:
+      clientVersion: v3.3.1
+      repositories:
+        ingress-nginx:
+          url: https://kubernetes.github.io/ingress-nginx
+
+credentials:
+  - name: kubeconfig
+    path: /root/.kube/config
+
+parameters:
+  - name: chart-values
+    type: string
+    path: /cnab/app/chart-values.yaml
+    default: ''
+
+install:
+  - helm3:
+      description: "Helm Install Nginx Ingress"
+      name: nginx-ingress
+      namespace: kube-system
+      chart: ingress-nginx/ingress-nginx
+      wait: true
+      values:
+        - /cnab/app/chart-values.yaml
+
+upgrade:
+  - helm3:
+      description: "Helm Upgrade Nginx Ingress"
+      name: nginx-ingress
+      namespace: kube-system
+      chart: ingress-nginx/ingress-nginx
+      wait: true
+      values:
+        - /cnab/app/chart-values.yaml
+
+status:
+  - helm3:
+      description: "Check status of Nginx Ingress"
+      arguments:
+        - status
+        - nginx-ingress
+      flags:
+        o: yaml
+
+uninstall:
+  - helm3:
+      description: "Helm Uninstall Nginx Ingress"
+      purge: true
+      namespace: kube-system
+      releases:
+        - nginx-ingress

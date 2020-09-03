@@ -1,0 +1,1 @@
+A bundle for deploying a [Brigade project](https://docs.brigade.sh/topics/projects/) to Kubernetes via Helm.

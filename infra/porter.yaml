@@ -1,0 +1,62 @@
+name: infra
+description: "A Porter bundle to install my testing infra on k8s"
+version: 0.1.0
+tag: vdice.azurecr.io/infra
+
+mixins:
+  - exec
+
+credentials:
+  - name: kubeconfig
+    path: /root/.kube/config
+
+dependencies:
+  # Auxiliary
+  - name: cert-manager
+    tag: vdice/cert-manager:v0.1.0
+      
+  - name: nginx-ingress
+    tag: vdice/nginx-ingress:v0.1.0
+
+  - name: nfs
+    tag: vdice/nfs:v0.1.0
+
+  # Brigade server and GH gateway
+  - name: brigade
+    tag: vdice/brigade:v0.1.0
+
+  - name: brigade-github-app
+    tag: vdice/brigade-github-app:v0.1.0
+
+  # Brigade projects
+  # Uses same bundle but with different values
+  - name: github-vdice-brigade
+    tag: vdice/brigade-project:v0.1.0
+    parameters:
+      name: github-vdice-brigade
+
+  - name: github-vdice-cnab-spec
+    tag: vdice/brigade-project:v0.1.0
+    parameters:
+      name: github-vdice-cnab-spec
+
+# TODO: it would be nice to support a "no-mixin"/no-op step, to reduce YAML
+install:
+  - exec:
+      description: "Install testing infra"
+      command: sh
+
+status:
+  - exec:
+      description: "Check testing infra"
+      command: sh
+
+upgrade:
+  - exec:
+      description: "Upgrade testing infra"
+      command: sh
+
+uninstall:
+  - exec:
+      description: "Uninstall testing infra"
+      command: sh
