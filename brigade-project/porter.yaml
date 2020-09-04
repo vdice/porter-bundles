@@ -23,6 +23,7 @@ parameters:
   - name: chart-values
     type: string
     path: /cnab/app/chart-values.yaml
+    default: ''
 
 install:
   - helm3:

@@ -54,7 +54,7 @@ install:
       arguments:
         - ./echo-params.sh
 
-upgrae:
+upgrade:
   - exec:
       description: "echo params"
       command: bash

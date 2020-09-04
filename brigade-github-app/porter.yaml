@@ -15,17 +15,21 @@ credentials:
     path: /root/.kube/config
 
 parameters:
+  - name: name
+    type: string
+    default: brigade-gh-app
   - name: namespace
     type: string
     default: default
   - name: chart-values
     type: string
     path: /cnab/app/chart-values.yaml
+    default: ''
 
 install:
   - helm3:
-      description: "Install Brigade GitHub App Gateway"
-      name: brigade-gh-app
+      description: "Install Brigade GitHub App Gateway: {{ bundle.parameters.name }}"
+      name: "{{ bundle.parameters.name }}"
       namespace: "{{ bundle.parameters.namespace }}"
       chart: brigadecore/brigade-github-app
       wait: true
@@ -34,17 +38,17 @@ install:
 
 status:
   - helm3:
-      description: "Brigade GitHub App Gateway Status"
+      description: "Check status of Brigade GitHub App Gateway: {{ bundle.parameters.name }}"
       arguments:
         - status
-        - brigade-gh-app
+        - "{{ bundle.parameters.name }}"
       flags:
         o: yaml
 
 upgrade:
   - helm3:
-      description: "Upgrade Brigade GitHub App Gateway"
-      name: brigade-gh-app
+      description: "Upgrade Brigade GitHub App Gateway: {{ bundle.parameters.name }}"
+      name: "{{ bundle.parameters.name }}"
       namespace: "{{ bundle.parameters.namespace }}"
       chart: brigadecore/brigade-github-app
       wait: true
@@ -53,9 +57,9 @@ upgrade:
 
 uninstall:
   - helm3:
-      description: "Uninstall Brigade GitHub App Gateway"
+      description: "Uninstall Brigade GitHub App Gateway: {{ bundle.parameters.name }}"
       purge: true
       releases:
-        - brigade-gh-app
+        - "{{ bundle.parameters.name }}"
 
 

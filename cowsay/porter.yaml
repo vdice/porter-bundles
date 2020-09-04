@@ -1,0 +1,27 @@
+name: cowsay
+version: 0.1.0
+description: "A Porter bundle using cowsay!"
+tag: vdice/cowsay
+
+mixins:
+  - cowsay
+
+parameters:
+  - name: message
+    type: string
+    default: "Hello World!"
+
+install:
+  - cowsay:
+      description: "Install"
+      message: "{{ bundle.parameters.message }}"
+
+upgrade:
+  - cowsay:
+      description: "Upgrade"
+      message: "{{ bundle.parameters.message }}"
+
+uninstall:
+  - cowsay:
+      description: "Uninstall"
+      message: "{{ bundle.parameters.message }}"

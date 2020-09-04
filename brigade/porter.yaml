@@ -15,17 +15,21 @@ credentials:
     path: /root/.kube/config
 
 parameters:
+  - name: name
+    type: string
+    default: brigade
   - name: namespace
     type: string
     default: default
   - name: chart-values
     type: string
     path: /cnab/app/chart-values.yaml
+    default: ''
 
 install:
   - helm3:
       description: "Install Brigade"
-      name: brigade
+      name: "{{ bundle.parameters.name }}"
       namespace: "{{ bundle.parameters.namespace }}"
       chart: brigadecore/brigade
       wait: true
@@ -37,14 +41,14 @@ status:
       description: "Brigade Status"
       arguments:
         - status
-        - brigade
+        - "{{ bundle.parameters.name }}"
       flags:
         o: yaml
 
 upgrade:
   - helm3:
       description: "Upgrade Brigade"
-      name: brigade
+      name: "{{ bundle.parameters.name }}"
       namespace: "{{ bundle.parameters.namespace }}"
       chart: brigadecore/brigade
       wait: true
@@ -56,6 +60,6 @@ uninstall:
       description: "Uninstall Brigade"
       purge: true
       releases:
-        - brigade
+        - "{{ bundle.parameters.name }}"
 
 
