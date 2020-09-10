@@ -1,0 +1,63 @@
+name: gh-build-badge
+description: "A Porter bundle to deploy the GitHub Build Badge Helm chart to Kubernetes"
+version: 0.1.0
+tag: vdice/gh-build-badge
+dockerfile: Dockerfile.tmpl
+
+mixins:
+  - helm3:
+      clientVersion: v3.3.1
+
+credentials:
+  - name: kubeconfig
+    path: /root/.kube/config
+
+parameters:
+  - name: name
+    type: string
+    default: gh-build-badge
+  - name: namespace
+    type: string
+    default: default
+  - name: chart-values
+    type: string
+    path: /cnab/app/chart-values.yaml
+    default: ''
+
+install:
+  - helm3:
+      description: "Install GitHub Build Badge: {{ bundle.parameters.name }}"
+      name: "{{ bundle.parameters.name }}"
+      namespace: "{{ bundle.parameters.namespace }}"
+      chart: /cnab/app/gh-build-badge/charts/gh-build-badge
+      wait: true
+      values:
+        - /cnab/app/chart-values.yaml
+
+status:
+  - helm3:
+      description: "Check status of GitHub Build Badge: {{ bundle.parameters.name }}"
+      arguments:
+        - status
+        - "{{ bundle.parameters.name }}"
+      flags:
+        o: yaml
+
+upgrade:
+  - helm3:
+      description: "Upgrade GitHub Build Badge: {{ bundle.parameters.name }}"
+      name: "{{ bundle.parameters.name }}"
+      namespace: "{{ bundle.parameters.namespace }}"
+      chart: /cnab/app/gh-build-badge/charts/gh-build-badge
+      wait: true
+      values:
+        - /cnab/app/chart-values.yaml
+
+uninstall:
+  - helm3:
+      description: "Uninstall GitHub Build Badge: {{ bundle.parameters.name }}"
+      purge: true
+      releases:
+        - "{{ bundle.parameters.name }}"
+
+
