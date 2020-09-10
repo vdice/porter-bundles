@@ -1,7 +1,7 @@
 name: brigade-project
 description: "A Porter bundle to deploy a Brigade project to Kubernetes via Helm"
 version: 0.1.0
-tag: vdice/brigade-project:v0.1.0
+tag: vdice/brigade-project
 
 mixins:
   - helm3:
