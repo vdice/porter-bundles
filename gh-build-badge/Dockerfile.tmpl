@@ -4,9 +4,7 @@ ARG BUNDLE_DIR
 
 RUN apt-get update && apt-get install -y ca-certificates git
 
-# TODO: use upstream/canonical repo instead of fork
-# RUN git clone git://github.com/technosophos/gh-build-badge.git $BUNDLE_DIR/gh-build-badge
-RUN git clone -b feat/update-api-versions git://github.com/vdice/gh-build-badge.git $BUNDLE_DIR/gh-build-badge
+RUN git clone git://github.com/technosophos/gh-build-badge.git $BUNDLE_DIR/gh-build-badge
 
 # Use the BUNDLE_DIR build argument to copy files into the bundle
 COPY . $BUNDLE_DIR
