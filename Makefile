@@ -1,3 +1,6 @@
+SHELL    := /bin/bash
+BASE_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+
 default: build-bundle
 
 ## Targets for building, validating and publishing bundles ##
@@ -32,12 +35,14 @@ else
 	@cd $(BUNDLE) && ../bin/porter$(FILE_EXT) publish --tag $(REGISTRY)/$(BUNDLE)
 endif
 
+SCHEMA_DIR         := $(BASE_DIR)/schema
 SCHEMA_VERSION     := cnab-core-1.0.1
 BUNDLE_SCHEMA      := bundle.schema.json
 DEFINITIONS_SCHEMA := definitions.schema.json
 
 define fetch-schema
-	@curl -L --fail --silent --show-error -o /tmp/$(1) \
+	@mkdir -p $(SCHEMA_DIR)
+	@curl -L --fail --silent --show-error -o $(SCHEMA_DIR)/$(1) \
 		https://cnab.io/schema/$(SCHEMA_VERSION)/$(1)
 endef
 
@@ -49,20 +54,22 @@ fetch-bundle-schema:
 fetch-definitions-schema:
 	$(call fetch-schema,$(DEFINITIONS_SCHEMA))
 
-HAS_AJV := $(shell command -v ajv)
-ajv:
-ifndef HAS_AJV
-	@npm install -g ajv-cli
-endif
+VALIDATOR_IMG := vdice/cnab-validator:ajv
+
+.PHONY: build-validator
+build-validator:
+	@docker build -f Dockerfile.ajv -t $(VALIDATOR_IMG) .
 
 .PHONY: validate-bundle
-validate-bundle: fetch-schemas ajv
+validate-bundle: build-validator fetch-schemas
 ifndef BUNDLE
 	$(call all-bundles,validate-bundle)
 else
 	@echo Validating $(BUNDLE)...
-	@cd $(BUNDLE) && \
-		ajv test -s /tmp/$(BUNDLE_SCHEMA) -r /tmp/$(DEFINITIONS_SCHEMA) -d .cnab/bundle.json --valid
+	@docker run --rm \
+		-v $(BASE_DIR):$(BASE_DIR) \
+		-w $(BASE_DIR) \
+		$(VALIDATOR_IMG) sh -c 'cd $(BUNDLE) && ajv test -s $(SCHEMA_DIR)/$(BUNDLE_SCHEMA) -r $(SCHEMA_DIR)/$(DEFINITIONS_SCHEMA) -d .cnab/bundle.json --valid'
 endif
 
 ## Utility targets to download porter and mixins ##
