@@ -54,14 +54,14 @@ fetch-bundle-schema:
 fetch-definitions-schema:
 	$(call fetch-schema,$(DEFINITIONS_SCHEMA))
 
-VALIDATOR_IMG := vdice/cnab-validator:ajv
+VALIDATOR_IMG := vdice/cnab-validator:latest
 
 .PHONY: build-validator
 build-validator:
 	@docker build -f Dockerfile.ajv -t $(VALIDATOR_IMG) .
 
 .PHONY: validate-bundle
-validate-bundle: build-validator fetch-schemas
+validate-bundle: fetch-schemas
 ifndef BUNDLE
 	$(call all-bundles,validate-bundle)
 else
