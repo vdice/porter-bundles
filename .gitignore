@@ -1,2 +1,4 @@
 */Dockerfile
 */.cnab
+bin
+schema
