@@ -1,4 +1,4 @@
-*/Dockerfile
-*/.cnab
+**/*/Dockerfile
+**/*/.cnab
 bin
 schema
