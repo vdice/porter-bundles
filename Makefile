@@ -1,5 +1,7 @@
-SHELL    := /bin/bash
-BASE_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+SHELL     := bash
+BASE_DIR  := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+# --no-print-directory avoids verbose logging when invoking targets that utilize sub-makes
+MAKE_OPTS ?= --no-print-directory
 
 default: build-bundle
 
@@ -12,7 +14,7 @@ REGISTRY ?= ghcr.io/vdice
 define all-bundles
 	@for dir in $$(ls -1 .); do \
 		if [[ -e "./$$dir/porter.yaml" ]]; then \
-			BUNDLE=$$dir make $(MAKE_OPTS) $(1) || exit $$? ; \
+			BUNDLE=$$dir $(MAKE) $(MAKE_OPTS) $(1) || exit $$? ; \
 		fi ; \
 	done
 endef
