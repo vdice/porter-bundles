@@ -1,0 +1,19 @@
+name: PR
+
+on: [pull_request]
+
+jobs:
+  build:
+    name: Build Bundles 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Setup Porter
+        uses: getporter/gh-action@v0.1.1
+      - name: Bootstrap
+        run: make bootstrap
+      - name: Build
+        run: make build-bundle
+      - name: Validate
+        run: make validate-bundle
