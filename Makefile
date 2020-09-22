@@ -94,6 +94,8 @@ PORTER_MIXINS_URL = https://cdn.porter.sh/mixins
 PORTER_MIXINS     = az arm exec docker docker-compose helm kubernetes terraform
 MIXIN_TAG        ?= latest
 
+get-mixins: get-porter-mixins get-other-mixins
+
 get-porter-mixins:
 	@$(foreach MIXIN, $(PORTER_MIXINS), \
 		bin/porter$(FILE_EXT) mixin install $(MIXIN) --version $(MIXIN_TAG) --url $(PORTER_MIXINS_URL)/$(MIXIN); \
@@ -114,7 +116,7 @@ bin/porter-runtime:
 	@curl -fsSLo bin/porter-runtime https://cdn.porter.sh/canary/porter-runtime-linux-amd64
 	@chmod +x bin/porter-runtime
 
-bootstrap: bin/porter$(FILE_EXT) bin/porter-runtime get-porter-mixins get-other-mixins
+bootstrap: bin/porter$(FILE_EXT) bin/porter-runtime get-mixins
 
 clean:
 	@rm -rf bin
