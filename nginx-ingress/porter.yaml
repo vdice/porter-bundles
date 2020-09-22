@@ -1,11 +1,11 @@
 name: nginx-ingress
 description: "A Porter bundle to install nginx-ingress for k8s"
 version: 0.1.0
-tag: vdice/nginx-ingress
+tag: ghcr.io/vdice/nginx-ingress
 
 mixins:
   - helm3:
-      clientVersion: v3.3.1
+      clientVersion: v3.3.3
       repositories:
         ingress-nginx:
           url: https://kubernetes.github.io/ingress-nginx

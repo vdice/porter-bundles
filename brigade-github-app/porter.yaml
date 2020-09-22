@@ -1,11 +1,11 @@
 name: brigade-github-app
 description: "A Porter bundle to deploy a Brigade GitHub App Gateway to Kubernetes via Helm"
 version: 0.1.0
-tag: vdice/brigade-github-app
+tag: ghcr.io/vdice/brigade-github-app
 
 mixins:
   - helm3:
-      clientVersion: v3.3.1
+      clientVersion: v3.3.3
       repositories:
         brigadecore:
           url: "https://brigadecore.github.io/charts"
@@ -15,9 +15,6 @@ credentials:
     path: /root/.kube/config
 
 parameters:
-  - name: name
-    type: string
-    default: brigade-gh-app
   - name: namespace
     type: string
     default: default
@@ -28,8 +25,8 @@ parameters:
 
 install:
   - helm3:
-      description: "Install Brigade GitHub App Gateway: {{ bundle.parameters.name }}"
-      name: "{{ bundle.parameters.name }}"
+      description: "Install Brigade GitHub App Gateway: {{ installation.name }}"
+      name: "{{ installation.name }}"
       namespace: "{{ bundle.parameters.namespace }}"
       chart: brigadecore/brigade-github-app
       wait: true
@@ -38,17 +35,17 @@ install:
 
 status:
   - helm3:
-      description: "Check status of Brigade GitHub App Gateway: {{ bundle.parameters.name }}"
+      description: "Check status of Brigade GitHub App Gateway: {{ installation.name }}"
       arguments:
         - status
-        - "{{ bundle.parameters.name }}"
+        - "{{ installation.name }}"
       flags:
         o: yaml
 
 upgrade:
   - helm3:
-      description: "Upgrade Brigade GitHub App Gateway: {{ bundle.parameters.name }}"
-      name: "{{ bundle.parameters.name }}"
+      description: "Upgrade Brigade GitHub App Gateway: {{ installation.name }}"
+      name: "{{ installation.name }}"
       namespace: "{{ bundle.parameters.namespace }}"
       chart: brigadecore/brigade-github-app
       wait: true
@@ -57,9 +54,9 @@ upgrade:
 
 uninstall:
   - helm3:
-      description: "Uninstall Brigade GitHub App Gateway: {{ bundle.parameters.name }}"
+      description: "Uninstall Brigade GitHub App Gateway: {{ installation.name }}"
       purge: true
       releases:
-        - "{{ bundle.parameters.name }}"
+        - "{{ installation.name }}"
 
 

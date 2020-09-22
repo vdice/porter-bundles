@@ -1,7 +1,7 @@
 name: params
 version: 0.1.0
 description: "A bundle with different parameter types"
-tag: vdice.azurecr.io/params:v0.1.0
+tag: ghcr.io/vdice/params:v0.1.0
 
 parameters:
   - name: ainteger
