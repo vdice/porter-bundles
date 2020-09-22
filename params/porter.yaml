@@ -1,7 +1,7 @@
 name: params
 version: 0.1.0
 description: "A bundle with different parameter types"
-tag: ghcr.io/vdice/params:v0.1.0
+tag: vdice/params
 
 parameters:
   - name: ainteger

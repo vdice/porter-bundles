@@ -1,7 +1,7 @@
 name: nginx-ingress
 description: "A Porter bundle to install nginx-ingress for k8s"
 version: 0.1.0
-tag: ghcr.io/vdice/nginx-ingress
+tag: vdice/nginx-ingress
 
 mixins:
   - helm3:

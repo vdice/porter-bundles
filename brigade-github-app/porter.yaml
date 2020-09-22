@@ -1,7 +1,7 @@
 name: brigade-github-app
 description: "A Porter bundle to deploy a Brigade GitHub App Gateway to Kubernetes via Helm"
 version: 0.1.0
-tag: ghcr.io/vdice/brigade-github-app
+tag: vdice/brigade-github-app
 
 mixins:
   - helm3:

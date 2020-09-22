@@ -1,7 +1,7 @@
 name: nfs
 description: "A Porter bundle to install the NFS Provisioner for k8s"
 version: 0.1.0
-tag: ghcr.io/vdice/nfs
+tag: vdice/nfs
 
 mixins:
   - helm3:

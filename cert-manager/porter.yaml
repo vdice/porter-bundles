@@ -1,7 +1,7 @@
 name: cert-manager
 description: "A Porter bundle to install cert-manager for k8s"
 version: 0.1.0
-tag: ghcr.io/vdice/cert-manager
+tag: vdice/cert-manager
 
 mixins:
   - helm3:
