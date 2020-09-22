@@ -3,6 +3,8 @@ BASE_DIR  := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 # --no-print-directory avoids verbose logging when invoking targets that utilize sub-makes
 MAKE_OPTS ?= --no-print-directory
 
+PORTER_HOME ?= $(BASE_DIR)/bin
+
 default: build-bundle
 
 ## Targets for building, validating and publishing bundles ##
@@ -28,7 +30,7 @@ ifndef BUNDLE
 	$(call all-bundles,build-bundle)
 else
 	@echo Building $(BUNDLE)...
-	@cd $(BUNDLE) && ../bin/porter$(FILE_EXT) build
+	@cd $(BUNDLE) && $(PORTER_HOME)/porter$(FILE_EXT) build
 endif
 
 .PHONY: publish-bundle
@@ -37,7 +39,7 @@ ifndef BUNDLE
 	$(call all-bundles,publish-bundle)
 else
 	@echo Publishing $(BUNDLE)...
-	@cd $(BUNDLE) && ../bin/porter$(FILE_EXT) publish --tag $(REGISTRY)/$(BUNDLE):$(VERSION)
+	@cd $(BUNDLE) && $(PORTER_HOME)/porter$(FILE_EXT) publish --tag $(REGISTRY)/$(BUNDLE):$(VERSION)
 endif
 
 SCHEMA_DIR         := $(BASE_DIR)/schema
@@ -98,25 +100,25 @@ get-mixins: get-porter-mixins get-other-mixins
 
 get-porter-mixins:
 	@$(foreach MIXIN, $(PORTER_MIXINS), \
-		bin/porter$(FILE_EXT) mixin install $(MIXIN) --version $(MIXIN_TAG) --url $(PORTER_MIXINS_URL)/$(MIXIN); \
+		$(PORTER_HOME)/porter$(FILE_EXT) mixin install $(MIXIN) --version $(MIXIN_TAG) --url $(PORTER_MIXINS_URL)/$(MIXIN); \
 	)
 
 # TODO: use upstream repo for cowsay mixin once next release is out
-# @bin/porter$(FILE_EXT) mixin install cowsay --version v0.1.0 --url https://github.com/carolynvs/porter-cowsay/releases/download
+# @$(PORTER_HOME)/porter$(FILE_EXT) mixin install cowsay --version v0.1.0 --url https://github.com/carolynvs/porter-cowsay/releases/download
 get-other-mixins:
-	@bin/porter$(FILE_EXT) mixin install cowsay --version v0.2.0 --url https://github.com/vdice/porter-cowsay/releases/download
-	@bin/porter$(FILE_EXT) mixin install helm3 --feed-url https://mchorfa.github.com/porter-helm3/atom.xml
+	@$(PORTER_HOME)/porter$(FILE_EXT) mixin install cowsay --version v0.2.0 --url https://github.com/vdice/porter-cowsay/releases/download
+	@$(PORTER_HOME)/porter$(FILE_EXT) mixin install helm3 --feed-url https://mchorfa.github.com/porter-helm3/atom.xml
 
-bin/porter$(FILE_EXT):
+$(PORTER_HOME)/porter$(FILE_EXT):
 	@mkdir -p bin
-	@curl -fsSLo bin/porter$(FILE_EXT) https://cdn.porter.sh/canary/porter-$(CLIENT_PLATFORM)-$(CLIENT_ARCH)$(FILE_EXT)
-	@chmod +x bin/porter$(FILE_EXT)
+	@curl -fsSLo $(PORTER_HOME)/porter$(FILE_EXT) https://cdn.porter.sh/canary/porter-$(CLIENT_PLATFORM)-$(CLIENT_ARCH)$(FILE_EXT)
+	@chmod +x $(PORTER_HOME)/porter$(FILE_EXT)
 
-bin/porter-runtime:
-	@curl -fsSLo bin/porter-runtime https://cdn.porter.sh/canary/porter-runtime-linux-amd64
-	@chmod +x bin/porter-runtime
+$(PORTER_HOME)/porter-runtime:
+	@curl -fsSLo $(PORTER_HOME)/porter-runtime https://cdn.porter.sh/canary/porter-runtime-linux-amd64
+	@chmod +x $(PORTER_HOME)/porter-runtime
 
-bootstrap: bin/porter$(FILE_EXT) bin/porter-runtime get-mixins
+bootstrap: $(PORTER_HOME)/porter$(FILE_EXT) $(PORTER_HOME)/porter-runtime get-mixins
 
 clean:
 	@rm -rf bin
