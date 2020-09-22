@@ -7,6 +7,9 @@ default: build-bundle
 
 ## Targets for building, validating and publishing bundles ##
 REGISTRY ?= ghcr.io/vdice
+## TODO: remove this when Porter supports publishing with registry override
+## (and thus preserving bundle version spec'd in the manifest)
+VERSION  ?= v0.1.0
 
 # all-bundles loops through all items in the current directory
 # and if the item is a sub-directory containing a porter.yaml file,
@@ -34,7 +37,7 @@ ifndef BUNDLE
 	$(call all-bundles,publish-bundle)
 else
 	@echo Publishing $(BUNDLE)...
-	@cd $(BUNDLE) && ../bin/porter$(FILE_EXT) publish --tag $(REGISTRY)/$(BUNDLE)
+	@cd $(BUNDLE) && ../bin/porter$(FILE_EXT) publish --tag $(REGISTRY)/$(BUNDLE):$(VERSION)
 endif
 
 SCHEMA_DIR         := $(BASE_DIR)/schema
