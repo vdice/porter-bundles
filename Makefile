@@ -111,11 +111,11 @@ get-other-mixins:
 
 $(PORTER_HOME)/porter$(FILE_EXT):
 	@mkdir -p bin
-	@curl -fsSLo $(PORTER_HOME)/porter$(FILE_EXT) https://cdn.porter.sh/canary/porter-$(CLIENT_PLATFORM)-$(CLIENT_ARCH)$(FILE_EXT)
+	@curl -fsSLo $(PORTER_HOME)/porter$(FILE_EXT) https://cdn.porter.sh/latest/porter-$(CLIENT_PLATFORM)-$(CLIENT_ARCH)$(FILE_EXT)
 	@chmod +x $(PORTER_HOME)/porter$(FILE_EXT)
 
 $(PORTER_HOME)/porter-runtime:
-	@curl -fsSLo $(PORTER_HOME)/porter-runtime https://cdn.porter.sh/canary/porter-runtime-linux-amd64
+	@curl -fsSLo $(PORTER_HOME)/porter-runtime https://cdn.porter.sh/latest/porter-runtime-linux-amd64
 	@chmod +x $(PORTER_HOME)/porter-runtime
 
 bootstrap: $(PORTER_HOME)/porter$(FILE_EXT) $(PORTER_HOME)/porter-runtime get-mixins
