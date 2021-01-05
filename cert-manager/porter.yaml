@@ -1,11 +1,11 @@
 name: cert-manager
 description: "A Porter bundle to install cert-manager for k8s"
 version: 0.1.0
-tag: vdice/cert-manager
+registry: vdice
 
 mixins:
   - helm3:
-      clientVersion: v3.3.3
+      clientVersion: v3.4.1
       repositories:
         jetstack:
           url: https://charts.jetstack.io
@@ -30,14 +30,6 @@ parameters:
 
 install:
   - kubernetes:
-      description: "Install Cert Manager CRDs and Issuers"
-      wait: true
-      manifests:
-        - /cnab/app/manifests/crds.yaml
-        - /cnab/app/manifests/issuer-staging.yaml
-        - /cnab/app/manifests/issuer-prod.yaml
-  
-  - kubernetes:
       description: "Create cert-manager namespace"
       wait: true
       manifests:
@@ -48,29 +40,39 @@ install:
       name: cert-manager
       namespace: cert-manager
       chart: jetstack/cert-manager
-      version: v0.11.0
+      version: v1.1.0
       wait: true
       values:
         - /cnab/app/chart-values.yaml
+      set:
+        installCRDs: true
 
-upgrade:
   - kubernetes:
-      description: "Upgrade Cert Manager CRDs and Issuers"
+      description: "Install Issuers"
       wait: true
       manifests:
-        - /cnab/app/manifests/crds.yaml
         - /cnab/app/manifests/issuer-staging.yaml
         - /cnab/app/manifests/issuer-prod.yaml
 
+upgrade:
   - helm3:
       description: "Helm Upgrade Cert Manager"
       name: cert-manager
       namespace: cert-manager
       chart: jetstack/cert-manager
-      version: v0.11.0
+      version: v1.1.0
       wait: true
       values:
         - /cnab/app/chart-values.yaml
+      set:
+        installCRDs: true
+
+  - kubernetes:
+      description: "Upgrade Issuers"
+      wait: true
+      manifests:
+        - /cnab/app/manifests/issuer-staging.yaml
+        - /cnab/app/manifests/issuer-prod.yaml
 
 status:
   - helm3:
@@ -82,6 +84,13 @@ status:
         o: yaml
 
 uninstall:
+  - kubernetes:
+      description: "Uninstall Issuers"
+      wait: true
+      manifests:
+        - /cnab/app/manifests/issuer-staging.yaml
+        - /cnab/app/manifests/issuer-prod.yaml
+
   - helm3:
       description: "Helm Uninstall Cert Manager"
       purge: true
@@ -94,11 +103,3 @@ uninstall:
       wait: true
       manifests:
         - /cnab/app/manifests/namespace.yaml
-
-  - kubernetes:
-      description: "Uninstall Cert Manager CRDs and Issuers"
-      wait: true
-      manifests:
-        - /cnab/app/manifests/issuer-staging.yaml
-        - /cnab/app/manifests/issuer-prod.yaml
-        - /cnab/app/manifests/crds.yaml
