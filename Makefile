@@ -3,15 +3,13 @@ BASE_DIR  := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 # --no-print-directory avoids verbose logging when invoking targets that utilize sub-makes
 MAKE_OPTS ?= --no-print-directory
 
-PORTER_HOME ?= $(BASE_DIR)/bin
+PORTER_HOME := $(BASE_DIR)/bin
 
 default: clean bootstrap build-bundle
 
 ## Targets for building, validating and publishing bundles ##
 REGISTRY ?= ghcr.io/vdice
-## TODO: remove this when Porter supports publishing with registry override
-## (and thus preserving bundle version spec'd in the manifest)
-VERSION  ?= v0.1.0
+
 
 # all-bundles loops through all items in the current directory
 # and if the item is a sub-directory containing a porter.yaml file,
@@ -39,7 +37,7 @@ ifndef BUNDLE
 	$(call all-bundles,publish-bundle)
 else
 	@echo Publishing $(BUNDLE)...
-	@cd $(BUNDLE) && $(PORTER_HOME)/porter$(FILE_EXT) publish --reference $(REGISTRY)/$(BUNDLE):$(VERSION)
+	@cd $(BUNDLE) && $(PORTER_HOME)/porter$(FILE_EXT) publish --registry $(REGISTRY)
 endif
 
 SCHEMA_DIR         := $(BASE_DIR)/schema
