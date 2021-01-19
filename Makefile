@@ -28,7 +28,7 @@ ifndef BUNDLE
 	$(call all-bundles,build-bundle)
 else
 	@echo Building $(BUNDLE)...
-	@cd $(BUNDLE) && $(PORTER_HOME)/porter$(FILE_EXT) build
+	@cd $(BUNDLE) && porter build
 endif
 
 .PHONY: publish-bundle
@@ -37,7 +37,7 @@ ifndef BUNDLE
 	$(call all-bundles,publish-bundle)
 else
 	@echo Publishing $(BUNDLE)...
-	@cd $(BUNDLE) && $(PORTER_HOME)/porter$(FILE_EXT) publish --registry $(REGISTRY)
+	@cd $(BUNDLE) && porter publish --registry $(REGISTRY)
 endif
 
 SCHEMA_DIR         := $(BASE_DIR)/schema
@@ -98,26 +98,14 @@ get-mixins: get-porter-mixins get-other-mixins
 
 get-porter-mixins:
 	@$(foreach MIXIN, $(PORTER_MIXINS), \
-		$(PORTER_HOME)/porter$(FILE_EXT) mixin install $(MIXIN) --version $(MIXIN_TAG) --url $(PORTER_MIXINS_URL)/$(MIXIN); \
+		porter mixin install $(MIXIN) --version $(MIXIN_TAG) --url $(PORTER_MIXINS_URL)/$(MIXIN); \
 	)
 
 # TODO: use upstream repo for cowsay mixin once next release is out
-# @$(PORTER_HOME)/porter$(FILE_EXT) mixin install cowsay --version v0.1.0 --url https://github.com/carolynvs/porter-cowsay/releases/download
+# @porter mixin install cowsay --version v0.1.0 --url https://github.com/carolynvs/porter-cowsay/releases/download
 get-other-mixins:
-	@$(PORTER_HOME)/porter$(FILE_EXT) mixin install cowsay --version v0.2.0 --url https://github.com/vdice/porter-cowsay/releases/download
-	@$(PORTER_HOME)/porter$(FILE_EXT) mixin install helm3 --feed-url https://mchorfa.github.com/porter-helm3/atom.xml
-
-$(PORTER_HOME)/porter$(FILE_EXT):
-	@mkdir -p bin
-	@curl -fsSLo $(PORTER_HOME)/porter$(FILE_EXT) https://cdn.porter.sh/canary/porter-$(CLIENT_PLATFORM)-$(CLIENT_ARCH)$(FILE_EXT)
-	@chmod +x $(PORTER_HOME)/porter$(FILE_EXT)
-
-$(PORTER_HOME)/runtimes/porter-runtime:
-	@mkdir -p bin/runtimes
-	@curl -fsSLo $(PORTER_HOME)/runtimes/porter-runtime https://cdn.porter.sh/canary/porter-linux-amd64
-	@chmod +x $(PORTER_HOME)/runtimes/porter-runtime
-
-bootstrap: $(PORTER_HOME)/porter$(FILE_EXT) $(PORTER_HOME)/runtimes/porter-runtime get-mixins
+	@porter mixin install cowsay --version v0.2.0 --url https://github.com/vdice/porter-cowsay/releases/download
+	@porter mixin install helm3 --feed-url https://mchorfa.github.com/porter-helm3/atom.xml
 
 clean:
 	@rm -rf bin
