@@ -1,7 +1,7 @@
 name: infra
 description: "A Porter bundle to install my testing infra on k8s"
 version: 0.1.0
-tag: vdice/infra
+registry: vdice
 
 mixins:
   - exec

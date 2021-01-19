@@ -1,7 +1,7 @@
 name: params
 version: 0.1.0
 description: "A bundle with different parameter types"
-tag: vdice/params
+registry: vdice
 
 parameters:
   - name: ainteger

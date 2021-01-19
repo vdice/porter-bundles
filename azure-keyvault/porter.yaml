@@ -3,8 +3,8 @@ mixins:
   - terraform
 
 name: porter-terraform-keyvault
-version: v0.1.0
-tag: vdice/porter-terraform-keyvault
+version: 0.1.0
+registry: vdice
 
 credentials:
   - name: subscription_id

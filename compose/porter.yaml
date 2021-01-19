@@ -13,7 +13,7 @@
 name: compose-example
 version: 0.1.0
 description: A sample bundle using Docker Compose
-tag: vdice/compose-example:v0.1.0
+registry: vdice
 
 required:
   - docker

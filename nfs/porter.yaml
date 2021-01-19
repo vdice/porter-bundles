@@ -1,14 +1,14 @@
 name: nfs
 description: "A Porter bundle to install the NFS Provisioner for k8s"
 version: 0.1.0
-tag: vdice/nfs
+registry: vdice
 
 mixins:
   - helm3:
       clientVersion: v3.3.3
       repositories:
-        stable:
-          url: https://kubernetes-charts.storage.googleapis.com
+        kvaps:
+          url: https://kvaps.github.io/charts
 
 credentials:
   - name: kubeconfig
@@ -24,7 +24,7 @@ install:
   - helm3:
       description: "Helm Install NFS Provisioner"
       name: nfs
-      chart: stable/nfs-server-provisioner
+      chart: kvaps/nfs-server-provisioner
       version: 1.1.1
       wait: true
       values:
@@ -34,7 +34,7 @@ upgrade:
   - helm3:
       description: "Helm Upgrade NFS Provisioner"
       name: nfs
-      chart: stable/nfs-server-provisioner
+      chart: kvaps/nfs-server-provisioner
       version: 1.1.1
       wait: true
       values:

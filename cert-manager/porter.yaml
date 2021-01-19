@@ -5,7 +5,7 @@ registry: vdice
 
 mixins:
   - helm3:
-      clientVersion: v3.4.1
+      clientVersion: v3.5.0
       repositories:
         jetstack:
           url: https://charts.jetstack.io

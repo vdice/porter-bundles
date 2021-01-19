@@ -1,62 +1,54 @@
 name: brigade
-description: "A Porter bundle to deploy a Brigade server to Kubernetes via Helm"
+description: A Porter bundle to deploy a Brigade server to Kubernetes via Helm
 version: 0.1.0
-tag: vdice/brigade
+registry: vdice
 
 mixins:
   - helm3:
-      clientVersion: v3.3.3
+      clientVersion: v3.5.0
       repositories:
         brigadecore:
-          url: "https://brigadecore.github.io/charts"
-
-credentials:
-  - name: kubeconfig
-    path: /root/.kube/config
+          url: https://brigadecore.github.io/charts
 
 parameters:
   - name: namespace
-    type: string
+    sensitive: false
     default: default
-  - name: chart-values
     type: string
+  - name: chart-values
+    sensitive: false
     path: /cnab/app/chart-values.yaml
-    default: ''
+    default: ""
+    type: string
+
+credentials:
+  - name: kubeconfig
+    required: true
+    path: /root/.kube/config
 
 install:
   - helm3:
-      description: "Install Brigade"
-      name: "{{ installation.name }}"
-      namespace: "{{ bundle.parameters.namespace }}"
       chart: brigadecore/brigade
-      wait: true
+      description: Install Brigade
+      name: '{{ installation.name }}'
+      namespace: '{{ bundle.parameters.namespace }}'
       values:
-        - /cnab/app/chart-values.yaml
-
-status:
-  - helm3:
-      description: "Brigade Status"
-      arguments:
-        - status
-        - "{{ installation.name }}"
-      flags:
-        o: yaml
+      - /cnab/app/chart-values.yaml
+      wait: true
 
 upgrade:
   - helm3:
-      description: "Upgrade Brigade"
-      name: "{{ installation.name }}"
-      namespace: "{{ bundle.parameters.namespace }}"
       chart: brigadecore/brigade
-      wait: true
+      description: Upgrade Brigade
+      name: '{{ installation.name }}'
+      namespace: '{{ bundle.parameters.namespace }}'
       values:
-        - /cnab/app/chart-values.yaml
+      - /cnab/app/chart-values.yaml
+      wait: true
 
 uninstall:
   - helm3:
-      description: "Uninstall Brigade"
+      description: Uninstall Brigade
       purge: true
       releases:
-        - "{{ installation.name }}"
-
-
+      - '{{ installation.name }}'

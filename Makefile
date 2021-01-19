@@ -5,7 +5,7 @@ MAKE_OPTS ?= --no-print-directory
 
 PORTER_HOME ?= $(BASE_DIR)/bin
 
-default: build-bundle
+default: clean bootstrap build-bundle
 
 ## Targets for building, validating and publishing bundles ##
 REGISTRY ?= ghcr.io/vdice
@@ -39,7 +39,7 @@ ifndef BUNDLE
 	$(call all-bundles,publish-bundle)
 else
 	@echo Publishing $(BUNDLE)...
-	@cd $(BUNDLE) && $(PORTER_HOME)/porter$(FILE_EXT) publish --tag $(REGISTRY)/$(BUNDLE):$(VERSION)
+	@cd $(BUNDLE) && $(PORTER_HOME)/porter$(FILE_EXT) publish --reference $(REGISTRY)/$(BUNDLE):$(VERSION)
 endif
 
 SCHEMA_DIR         := $(BASE_DIR)/schema

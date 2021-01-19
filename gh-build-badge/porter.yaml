@@ -1,7 +1,7 @@
 name: gh-build-badge
 description: "A Porter bundle to deploy the GitHub Build Badge Helm chart to Kubernetes"
 version: 0.1.0
-tag: vdice/gh-build-badge
+registry: vdice
 dockerfile: Dockerfile.tmpl
 
 mixins:
