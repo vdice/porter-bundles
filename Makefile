@@ -114,11 +114,12 @@ $(PORTER_HOME)/porter$(FILE_EXT):
 	@curl -fsSLo $(PORTER_HOME)/porter$(FILE_EXT) https://cdn.porter.sh/canary/porter-$(CLIENT_PLATFORM)-$(CLIENT_ARCH)$(FILE_EXT)
 	@chmod +x $(PORTER_HOME)/porter$(FILE_EXT)
 
-$(PORTER_HOME)/porter-runtime:
-	@curl -fsSLo $(PORTER_HOME)/porter-runtime https://cdn.porter.sh/canary/porter-linux-amd64
-	@chmod +x $(PORTER_HOME)/porter-runtime
+$(PORTER_HOME)/runtimes/porter-runtime:
+	@mkdir -p bin/runtimes
+	@curl -fsSLo $(PORTER_HOME)/runtimes/porter-runtime https://cdn.porter.sh/canary/porter-linux-amd64
+	@chmod +x $(PORTER_HOME)/runtimes/porter-runtime
 
-bootstrap: $(PORTER_HOME)/porter$(FILE_EXT) $(PORTER_HOME)/porter-runtime get-mixins
+bootstrap: $(PORTER_HOME)/porter$(FILE_EXT) $(PORTER_HOME)/runtimes/porter-runtime get-mixins
 
 clean:
 	@rm -rf bin
