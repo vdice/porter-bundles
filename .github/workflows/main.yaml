@@ -11,8 +11,10 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
-      - name: Bootstrap
-        run: make bootstrap
+      - name: Setup Porter
+        uses: getporter/gh-action@v0.1.3
+      - name: Get Mixins
+        run: make get-mixins
       - name: Login to the ghcr.io Docker Registry
         uses: docker/login-action@v1
         with:
@@ -27,8 +29,10 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
-      - name: Bootstrap
-        run: make bootstrap
+      - name: Setup Porter
+        uses: getporter/gh-action@v0.1.3
+      - name: Get Mixins
+        run: make get-mixins
       - name: Login to the docker.io Docker Registry
         uses: docker/login-action@v1
         with:

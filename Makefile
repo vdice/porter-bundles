@@ -3,7 +3,7 @@ BASE_DIR  := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 # --no-print-directory avoids verbose logging when invoking targets that utilize sub-makes
 MAKE_OPTS ?= --no-print-directory
 
-PORTER_HOME := $(BASE_DIR)/bin
+PORTER_HOME ?= $(BASE_DIR)/bin
 
 default: clean bootstrap build-bundle
 
