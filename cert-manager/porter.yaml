@@ -40,7 +40,8 @@ install:
       name: cert-manager
       namespace: cert-manager
       chart: jetstack/cert-manager
-      version: v1.1.0
+      upsert: true
+      version: v1.1.1
       wait: true
       values:
         - /cnab/app/chart-values.yaml
@@ -60,7 +61,7 @@ upgrade:
       name: cert-manager
       namespace: cert-manager
       chart: jetstack/cert-manager
-      version: v1.1.0
+      version: v1.1.1
       wait: true
       values:
         - /cnab/app/chart-values.yaml

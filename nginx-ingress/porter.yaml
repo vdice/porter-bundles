@@ -26,6 +26,7 @@ install:
       name: nginx-ingress
       namespace: kube-system
       chart: ingress-nginx/ingress-nginx
+      upsert: true
       wait: true
       values:
         - /cnab/app/chart-values.yaml

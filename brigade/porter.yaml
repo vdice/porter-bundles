@@ -1,5 +1,5 @@
 name: brigade
-description: A Porter bundle to deploy a Brigade server to Kubernetes via Helm
+description: A Porter bundle to deploy a Brigade v1 server to Kubernetes via Helm
 version: 0.1.0
 registry: ghcr.io/vdice
 
@@ -32,6 +32,7 @@ install:
       description: Install Brigade
       name: '{{ installation.name }}'
       namespace: '{{ bundle.parameters.namespace }}'
+      upsert: true
       values:
       - /cnab/app/chart-values.yaml
       wait: true

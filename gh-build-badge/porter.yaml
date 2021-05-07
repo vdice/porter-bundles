@@ -27,6 +27,7 @@ install:
       name: "{{ installation.name }}"
       namespace: "{{ bundle.parameters.namespace }}"
       chart: /cnab/app/gh-build-badge/charts/gh-build-badge
+      upsert: true
       wait: true
       values:
         - /cnab/app/chart-values.yaml
