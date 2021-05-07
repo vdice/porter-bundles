@@ -1,11 +1,11 @@
 name: nfs
 description: "A Porter bundle to install the NFS Provisioner for k8s"
 version: 0.1.0
-registry: vdice
+registry: ghcr.io/vdice
 
 mixins:
   - helm3:
-      clientVersion: v3.3.3
+      clientVersion: v3.5.4
       repositories:
         kvaps:
           url: https://kvaps.github.io/charts

@@ -1,7 +1,7 @@
 name: infra
 description: "A Porter bundle to install my testing infra on k8s"
 version: 0.1.0
-registry: vdice
+registry: ghcr.io/vdice
 
 mixins:
   - exec
@@ -13,28 +13,28 @@ credentials:
 dependencies:
   # Auxiliary
   - name: cert-manager
-    tag: vdice/cert-manager:v0.1.0
+    tag: ghcr.io/vdice/cert-manager:v0.1.0
       
   - name: nginx-ingress
-    tag: vdice/nginx-ingress:v0.1.0
+    tag: ghcr.io/vdice/nginx-ingress:v0.1.0
 
   - name: nfs
-    tag: vdice/nfs:v0.1.0
+    tag: ghcr.io/vdice/nfs:v0.1.0
 
   # Brigade server and GH gateway
   - name: brigade
-    tag: vdice/brigade:v0.1.0
+    tag: ghcr.io/vdice/brigade:v0.1.0
 
   - name: brigade-github-app
-    tag: vdice/brigade-github-app:v0.1.0
+    tag: ghcr.io/vdice/brigade-github-app:v0.1.0
 
   # Brigade projects
   # Uses same bundle but with different values
   - name: github-vdice-brigade
-    tag: vdice/brigade-project:v0.1.0
+    tag: ghcr.io/vdice/brigade-project:v0.1.0
 
   - name: github-vdice-cnab-spec
-    tag: vdice/brigade-project:v0.1.0
+    tag: ghcr.io/vdice/brigade-project:v0.1.0
 
 # TODO: it would be nice to support a "no-mixin"/no-op step, to reduce YAML
 install:

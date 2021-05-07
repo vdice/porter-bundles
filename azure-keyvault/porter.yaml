@@ -4,7 +4,7 @@ mixins:
 
 name: porter-terraform-keyvault
 version: 0.1.0
-registry: vdice
+registry: ghcr.io/vdice
 
 credentials:
   - name: subscription_id

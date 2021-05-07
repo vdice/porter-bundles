@@ -13,7 +13,7 @@
 name: compose-example
 version: 0.1.0
 description: A sample bundle using Docker Compose
-registry: vdice
+registry: ghcr.io/vdice
 
 required:
   - docker

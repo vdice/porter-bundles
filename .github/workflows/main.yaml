@@ -23,21 +23,3 @@ jobs:
           password: ${{ secrets.GHCR_PASSWORD }}
       - name: Publish
         run: REGISTRY=ghcr.io/vdice make publish-bundle 
-  publish-docker:
-    name: Publish Bundles to the docker.io Docker Registry
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
-      - name: Setup Porter
-        uses: getporter/gh-action@v0.1.3
-      - name: Get Mixins
-        run: make get-mixins
-      - name: Login to the docker.io Docker Registry
-        uses: docker/login-action@v1
-        with:
-          registry: docker.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Publish
-        run: REGISTRY=vdice make publish-bundle
