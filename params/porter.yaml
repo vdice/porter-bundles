@@ -1,15 +1,15 @@
 name: params
 version: 0.1.0
 description: "A bundle with different parameter types"
-registry: vdice
+registry: ghcr.io/vdice
 
 parameters:
-  - name: ainteger
+  - name: integer
     type: integer
     default: 1
     minimum: 0
     maximum: 10
-  - name: astringenum
+  - name: enum
     type: string
     default: blue
     enum:
@@ -17,22 +17,24 @@ parameters:
       - red
       - purple
       - pink
-  - name: astring
+  - name: string
     type: string
     minLength: 1
     maxLength: 10
     default: "my string!"
-  - name: aboolean
+  - name: boolean
     type: boolean
     default: true
   - name: installonly
     type: boolean
     applyTo:
       - install
+    default: false
   - name: sensitive
     type: string
     sensitive: true
-  - name: jsonobject
+    default: topsecret
+  - name: objectstring
     type: string
     default: '
       "myobject": {
@@ -43,6 +45,24 @@ parameters:
           3
         ]
       }'
+  - name: object
+    type: object
+    properties:
+      replicaCount:
+        $id: '#/properties/replicaCount'
+        type: integer
+    additionalProperties: false
+    default:
+      replicaCount: 3
+  - name: array
+    type: array
+    uniqueItems: true
+    items:
+      type: integer
+    default:
+      - 1
+      - 2
+      - 3
 
 mixins:
   - exec
