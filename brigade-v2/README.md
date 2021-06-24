@@ -1,0 +1,1 @@
+A bundle for deploying a [Brigade v2](https://github.com/brigadecore/brigade/tree/v2) server to Kubernetes via Helm.
