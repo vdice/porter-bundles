@@ -1,0 +1,75 @@
+name: brigade-github-gateway
+description: "A Porter bundle to deploy a Brigade v2 GitHub Gateway to Kubernetes via Helm"
+version: 0.1.0
+registry: ghcr.io/vdice
+
+mixins:
+  - exec
+  - helm3:
+      clientVersion: v3.6.1
+  - kubernetes
+
+parameters:
+  - name: namespace
+    sensitive: false
+    default: '{{ installation.name }}'
+    type: string
+  - name: chart-values
+    sensitive: false
+    path: /cnab/app/chart-values.yaml
+    default: ""
+    type: string
+  - name: chart-version
+    type: string
+    default: v0.1.0
+
+credentials:
+  - name: kubeconfig
+    required: true
+    path: /root/.kube/config
+
+# Notes: using exec/script instead of helm3 mixin step as we need to perform
+# setup in order to pull the chart from an OCI registry (ghcr.io)
+#
+# Would be great to add support for this to helm3 mixin, ideally as mixin
+# config that can run at build-time
+
+install:
+  - exec:
+      description: Install Brigade Github Gateway Helm chart
+      command: ./helpers.sh
+      arguments:
+        - install-chart
+        - '{{ bundle.parameters.chart-version }}'
+        - '{{ installation.name }}'
+        - '{{ bundle.parameters.namespace }}'
+
+upgrade:
+  - exec:
+      description: Upgrade Brigade Github Gateway Helm chart
+      command: ./helpers.sh
+      arguments:
+        - install-chart
+        - '{{ bundle.parameters.chart-version }}'
+        - '{{ installation.name }}'
+        - '{{ bundle.parameters.namespace }}'
+
+status:
+  - helm3:
+      description: Check status of Brigade Github Gateway Helm release
+      arguments:
+        - status
+        - '{{ installation.name }}'
+        - --namespace
+        - '{{ bundle.parameters.namespace }}'       
+      flags:
+        o: yaml
+
+uninstall:
+  - exec:
+      description: Delete Brigade Github Gateway Helm release
+      command: ./helpers.sh
+      arguments:
+        - delete-release
+        - '{{ installation.name }}'
+        - '{{ bundle.parameters.namespace }}'
