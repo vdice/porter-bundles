@@ -5,7 +5,7 @@ registry: ghcr.io/vdice
 
 mixins:
   - helm3:
-      clientVersion: v3.5.4
+      clientVersion: v3.6.1
       repositories:
         brigadecore:
           url: "https://brigadecore.github.io/charts"

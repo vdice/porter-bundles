@@ -22,6 +22,11 @@ parameters:
     minLength: 1
     maxLength: 10
     default: "my string!"
+  - name: multilinestring
+    type: string
+    default: |
+      this is
+      a multiline string!
   - name: boolean
     type: boolean
     default: true
