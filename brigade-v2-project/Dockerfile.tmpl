@@ -1,0 +1,12 @@
+FROM mikefarah/yq as yq
+
+FROM debian:stretch-slim
+
+COPY --from=yq /usr/bin/yq /usr/local/bin/yq
+
+ARG BUNDLE_DIR
+
+RUN apt-get update && apt-get install -y ca-certificates
+
+# Use the BUNDLE_DIR build argument to copy files into the bundle
+COPY . $BUNDLE_DIR

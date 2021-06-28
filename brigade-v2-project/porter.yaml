@@ -1,0 +1,95 @@
+name: brigade-v2-project
+description: "An Porter bundle to manage the lifecycle of a Brigade v2 Project"
+version: 0.1.0
+registry: ghcr.io/vdice
+dockerfile: Dockerfile.tmpl
+
+mixins:
+  - exec
+  - brig:
+      clientVersion: v2.0.0-alpha.5
+
+parameters:
+  - name: project-yaml
+    type: string
+    path: /cnab/app/project.yaml
+    default: ''
+  - name: secrets-yaml
+    type: string
+    path: /cnab/app/secrets.yaml
+    default: ''
+
+credentials:
+  - name: brigade-config
+    required: true
+    path: /root/.brigade/config
+
+install:
+  - exec:
+      description: 'Prep Brigade v2 Project {{ installation.name }}'
+      command: ./helpers.sh
+      arguments:
+        - prep-project
+        - '{{ installation.name }}'
+
+  - brig:
+      description: 'Create Brigade v2 Project {{ installation.name }}'
+      arguments:
+        - project
+        - create
+        - -f
+        - /cnab/app/project.yaml
+
+  - brig:
+      description: 'Set Brigade v2 Project {{ installation.name }} secrets'
+      arguments:
+        - project
+        - secret
+        - set
+        - -p
+        - '{{ installation.name }}'
+        - -f
+        - /cnab/app/secrets.yaml
+
+upgrade:
+  - exec:
+      description: 'Prep Brigade v2 Project {{ installation.name }}'
+      command: cat
+      arguments:
+        - /cnab/app/secrets.yaml
+
+  - exec:
+      description: 'Prep Brigade v2 Project {{ installation.name }}'
+      command: ./helpers.sh
+      arguments:
+        - prep-project
+        - '{{ installation.name }}'
+
+  - brig:
+      description: 'Update Brigade v2 Project {{ installation.name }}'
+      arguments:
+        - project
+        - update
+        - -f
+        - /cnab/app/project.yaml
+
+  - brig:
+      description: 'Update Brigade v2 Project {{ installation.name }} secrets'
+      arguments:
+        - project
+        - secrets
+        - set
+        - -p
+        - '{{ installation.name }}'
+        - -f
+        - /cnab/app/secrets.yaml
+
+uninstall:
+  - brig:
+      description: Delete Brigade v2 project
+      arguments:
+        - project
+        - delete
+        - -p
+        - '{{ installation.name }}'
+        - --yes
