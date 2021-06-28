@@ -106,6 +106,7 @@ get-porter-mixins:
 get-other-mixins:
 	@porter mixin install cowsay --version v0.2.0 --url https://github.com/vdice/porter-cowsay/releases/download
 	@porter mixin install helm3 --feed-url https://mchorfa.github.io/porter-helm3/atom.xml
+	@porter mixin install brig --feed-url https://vdice.github.io/porter-brig-mixin/atom.xml
 
 clean:
 	@rm -rf bin
