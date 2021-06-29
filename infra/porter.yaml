@@ -11,30 +11,31 @@ credentials:
     path: /root/.kube/config
 
 dependencies:
-  # Auxiliary
-  - name: cert-manager
-    tag: ghcr.io/vdice/cert-manager:v0.1.0
-      
-  - name: nginx-ingress
-    tag: ghcr.io/vdice/nginx-ingress:v0.1.0
+  requires:
+    # Auxiliary
+    - name: cert-manager
+      reference: ghcr.io/vdice/cert-manager:v0.1.0
+        
+    - name: nginx-ingress
+      reference: ghcr.io/vdice/nginx-ingress:v0.1.0
 
-  - name: nfs
-    tag: ghcr.io/vdice/nfs:v0.1.0
+    - name: nfs
+      reference: ghcr.io/vdice/nfs:v0.1.0
 
-  # Brigade server and GH gateway
-  - name: brigade
-    tag: ghcr.io/vdice/brigade:v0.1.0
+    # Brigade server and GH gateway
+    - name: brigade
+      reference: ghcr.io/vdice/brigade:v0.1.0
 
-  - name: brigade-github-app
-    tag: ghcr.io/vdice/brigade-github-app:v0.1.0
+    - name: brigade-github-app
+      reference: ghcr.io/vdice/brigade-github-app:v0.1.0
 
-  # Brigade projects
-  # Uses same bundle but with different values
-  - name: github-vdice-brigade
-    tag: ghcr.io/vdice/brigade-project:v0.1.0
+    # Brigade projects
+    # Uses same bundle but with different values
+    - name: github-vdice-brigade
+      reference: ghcr.io/vdice/brigade-project:v0.1.0
 
-  - name: github-vdice-cnab-spec
-    tag: ghcr.io/vdice/brigade-project:v0.1.0
+    - name: github-vdice-cnab-spec
+      reference: ghcr.io/vdice/brigade-project:v0.1.0
 
 # TODO: it would be nice to support a "no-mixin"/no-op step, to reduce YAML
 install:
