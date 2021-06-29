@@ -10,7 +10,6 @@ default: clean bootstrap build-bundle
 ## Targets for building, validating and publishing bundles ##
 REGISTRY ?= ghcr.io/vdice
 
-
 # all-bundles loops through all items in the current directory
 # and if the item is a sub-directory containing a porter.yaml file,
 # runs the make target(s) provided by the first argument
@@ -79,19 +78,8 @@ endif
 
 ## Utility targets to download porter and mixins ##
 
-CLIENT_PLATFORM = $(shell go env GOOS)
-CLIENT_ARCH     = $(shell go env GOARCH)
-
-ifeq ($(CLIENT_PLATFORM),windows)
-FILE_EXT=.exe
-else ifeq ($(RUNTIME_PLATFORM),windows)
-FILE_EXT=.exe
-else
-FILE_EXT=
-endif
-
 PORTER_MIXINS_URL = https://cdn.porter.sh/mixins
-PORTER_MIXINS     = az arm exec docker docker-compose helm kubernetes terraform
+PORTER_MIXINS     = az arm docker docker-compose helm kubernetes terraform
 MIXIN_TAG        ?= latest
 
 get-mixins: get-porter-mixins get-other-mixins
@@ -101,8 +89,6 @@ get-porter-mixins:
 		porter mixin install $(MIXIN) --version $(MIXIN_TAG) --url $(PORTER_MIXINS_URL)/$(MIXIN); \
 	)
 
-# TODO: use upstream repo for cowsay mixin once next release is out
-# @porter mixin install cowsay --version v0.1.0 --url https://github.com/carolynvs/porter-cowsay/releases/download
 get-other-mixins:
 	@porter mixin install cowsay --version v0.2.0 --url https://github.com/vdice/porter-cowsay/releases/download
 	@porter mixin install helm3 --feed-url https://mchorfa.github.io/porter-helm3/atom.xml
