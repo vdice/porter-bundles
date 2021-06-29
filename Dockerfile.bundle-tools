@@ -1,0 +1,23 @@
+ARG PORTER_VERSION=v1.0.0-alpha.2
+
+FROM getporter/porter:${PORTER_VERSION} AS porter
+
+FROM docker:stable-dind
+
+# Utilities setup
+RUN apk add --no-cache bash ca-certificates curl make
+
+# Porter setup
+ARG PORTER_VERSION
+
+ENV PORTER_HOME=/root/.porter
+
+ENV PATH=${PORTER_HOME}:${PATH}
+
+COPY --from=porter /usr/local/bin/porter ${PORTER_HOME}/porter
+
+RUN mkdir -p ${PORTER_HOME}/runtimes && \
+    cp ${PORTER_HOME}/porter ${PORTER_HOME}/runtimes/porter-runtime && \
+    $PORTER_HOME/porter mixin install exec --version ${PORTER_VERSION}
+
+ENTRYPOINT [ "/bin/bash" ]
