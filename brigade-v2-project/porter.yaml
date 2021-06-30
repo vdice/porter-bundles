@@ -54,12 +54,6 @@ install:
 upgrade:
   - exec:
       description: 'Prep Brigade v2 Project {{ installation.name }}'
-      command: cat
-      arguments:
-        - /cnab/app/secrets.yaml
-
-  - exec:
-      description: 'Prep Brigade v2 Project {{ installation.name }}'
       command: ./helpers.sh
       arguments:
         - prep-project
