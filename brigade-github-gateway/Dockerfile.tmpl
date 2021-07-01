@@ -1,0 +1,12 @@
+FROM lachlanevenson/k8s-kubectl:v1.21.1 as kubectl
+
+FROM debian:stretch-slim
+
+COPY --from=kubectl /usr/local/bin/kubectl /usr/local/bin/kubectl
+
+ARG BUNDLE_DIR
+
+RUN apt-get update && apt-get install -y ca-certificates jq
+
+# Use the BUNDLE_DIR build argument to copy files into the bundle
+COPY . $BUNDLE_DIR

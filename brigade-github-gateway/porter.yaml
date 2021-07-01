@@ -2,12 +2,14 @@ name: brigade-github-gateway
 description: "A Porter bundle to deploy a Brigade v2 GitHub Gateway to Kubernetes via Helm"
 version: 0.1.0
 registry: ghcr.io/vdice
+dockerfile: Dockerfile.tmpl
 
 mixins:
+  - brig:
+      clientVersion: v2.0.0-alpha.5
   - exec
   - helm3:
       clientVersion: v3.6.1
-  - kubernetes
 
 parameters:
   - name: namespace
@@ -27,6 +29,18 @@ credentials:
   - name: kubeconfig
     required: true
     path: /root/.kube/config
+  # TODO: add back in once Service Account automation is in
+  # - name: brigade-config
+  #   required: true
+  #   path: /root/.brigade/config
+
+# TODO: add back in once Service Account automation is in
+# outputs:
+#   - name: service-account-token
+#     type: file
+#     path: /cnab/app/outputs/service-account-token
+#     applyTo:
+#       - install
 
 # Notes: using exec/script instead of helm3 mixin step as we need to perform
 # setup in order to pull the chart from an OCI registry (ghcr.io)
@@ -35,6 +49,14 @@ credentials:
 # config that can run at build-time
 
 install:
+  # TODO:
+  # - exec:
+  #     description: Set up Brigade Github Gateway Service Account
+  #     command: ./helpers.sh
+  #     arguments:
+  #       - setup-service-account
+  #       - '{{ installation.name }}'
+
   - exec:
       description: Install Brigade Github Gateway Helm chart
       command: ./helpers.sh

@@ -1,5 +1,5 @@
 name: brigade-v2-project
-description: "An Porter bundle to manage the lifecycle of a Brigade v2 Project"
+description: "A Porter bundle to manage the lifecycle of a Brigade v2 Project"
 version: 0.1.0
 registry: ghcr.io/vdice
 dockerfile: Dockerfile.tmpl
