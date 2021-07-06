@@ -1,24 +1,16 @@
-name: my-docker-app
+name: docker-app
 version: 0.1.0
-description: My amazing docker app
-registry: getporter 
+description: A Porter bundle for a Docker Compose application
+registry: ghcr.io/vdice
 
 required:
-- docker:
-    privileged: false # Change to true if you need privileged containers
+- docker
 
 parameters:
-- name: hello_text
+- name: echo_text
   type: string
-  env: hello_text
-  default: hello from porter
-- name: hello_port
-  type: integer
-  env: hello_port
-  default: 8080
-- name: context
-  type: string
-  default: default
+  default: hello from porter!
+  path: /cnab/app/echo.txt
 
 mixins:
 - exec
@@ -30,12 +22,18 @@ install:
     description: "Create Docker volume"
     command: ./helpers.sh
     arguments:
-      - create_volume
+      - create_docker_volume
 
 - docker-compose:
     arguments:
     - up
     - -d
+
+- exec:
+    description: "Print app logs"
+    command: ./helpers.sh
+    arguments:
+      - print_app_logs
 
 upgrade:
 - docker-compose:

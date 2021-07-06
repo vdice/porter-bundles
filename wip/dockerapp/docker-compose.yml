@@ -2,11 +2,9 @@ version: "3.6"
 services:
   hello:
     image: busybox
-    command: ["echo", "${hello_text}", ">", "/root/echo.txt"]
-    ports:
-      - ${hello_port}:5678
+    command: ["sh", "-c", "ls /data && cat /data/echo.txt && echo"]
     volumes:
-      - myvol:/root
+      - myvol:/data
 volumes:
   myvol:
     external: true
