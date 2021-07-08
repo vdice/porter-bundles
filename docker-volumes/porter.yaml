@@ -1,0 +1,75 @@
+name: docker-volumes
+version: 0.1.0
+description: A Porter bundle for a Docker Compose application using Docker Volumes
+registry: ghcr.io/vdice
+
+required:
+  - docker
+
+parameters:
+  - name: echo_text
+    type: string
+    default: Hello from Porter!
+    path: /cnab/app/echo.txt
+
+  - name: docker_host_volume
+    description: The pre-existing directory on the host where the Docker volume should mounted
+    type: string
+    applyTo:
+      - install
+      - upgrade
+
+mixins:
+  - exec
+  - docker-compose
+  - docker:
+      clientVersion: 20.10.7
+
+install:
+  - exec:
+      description: "Create Docker volumes"
+      command: ./helpers.sh
+      arguments:
+        - create_docker_volumes
+        - '{{ bundle.parameters.docker_host_volume }}'
+
+  - docker-compose:
+      arguments:
+        - up
+        - -d
+
+  - exec:
+      description: "Print app logs"
+      command: ./helpers.sh
+      arguments:
+        - print_app_logs
+
+upgrade:
+  - exec:
+      description: "Update Docker volumes"
+      command: ./helpers.sh
+      arguments:
+        - update_docker_volumes
+        - '{{ bundle.parameters.docker_host_volume }}'
+
+  - docker-compose:
+      arguments:
+        - up
+        - -d
+
+  - exec:
+      description: "Print app logs"
+      command: ./helpers.sh
+      arguments:
+        - print_app_logs
+
+uninstall:
+  - docker-compose:
+      arguments:
+        - down
+
+  - exec:
+      description: "Remove Docker volumes"
+      command: ./helpers.sh
+      arguments:
+        - remove_docker_volumes

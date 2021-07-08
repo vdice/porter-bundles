@@ -1,0 +1,13 @@
+version: "3.6"
+services:
+  hello:
+    image: busybox
+    command: ["sh", "-c", "cat /data/echo.txt > /logs/echo.txt"]
+    volumes:
+      - cnab-app-volume:/data
+      - docker-host-volume:/logs
+volumes:
+  cnab-app-volume:
+    external: true
+  docker-host-volume:
+    external: true
