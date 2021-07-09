@@ -10,30 +10,49 @@ mixins:
       clientVersion: v2.0.0-alpha.5
 
 parameters:
+  - name: project-name
+    type: string
+    source:
+      output: project-name
+
   - name: project-yaml
     type: string
     path: /cnab/app/project.yaml
-    default: ''
+    applyTo:
+      - install
+      - upgrade
+
   - name: secrets-yaml
     type: string
     path: /cnab/app/secrets.yaml
     default: ''
+    applyTo:
+      - install
+      - upgrade
 
 credentials:
   - name: brigade-config
     required: true
     path: /root/.brigade/config
 
+outputs:
+  - name: project-name
+    type: string
+    applyTo:
+      - install
+
 install:
   - exec:
-      description: 'Prep Brigade v2 Project {{ installation.name }}'
+      description: 'Get Brigade v2 Project name'
       command: ./helpers.sh
       arguments:
-        - prep-project
-        - '{{ installation.name }}'
+        - get-project-name
+      outputs:
+        - name: project-name
+          path: /cnab/app/project-name
 
   - brig:
-      description: 'Create Brigade v2 Project {{ installation.name }}'
+      description: 'Create Brigade v2 Project: {{ bundle.outputs.project-name }}'
       arguments:
         - project
         - create
@@ -41,26 +60,19 @@ install:
         - /cnab/app/project.yaml
 
   - brig:
-      description: 'Set Brigade v2 Project {{ installation.name }} secrets'
+      description: 'Set Brigade v2 Project secrets: {{ bundle.outputs.project-name }}'
       arguments:
         - project
         - secret
         - set
         - -p
-        - '{{ installation.name }}'
+        - '{{ bundle.outputs.project-name }}'
         - -f
         - /cnab/app/secrets.yaml
 
 upgrade:
-  - exec:
-      description: 'Prep Brigade v2 Project {{ installation.name }}'
-      command: ./helpers.sh
-      arguments:
-        - prep-project
-        - '{{ installation.name }}'
-
   - brig:
-      description: 'Update Brigade v2 Project {{ installation.name }}'
+      description: 'Update Brigade v2 Project: {{ bundle.parameters.project-name }}'
       arguments:
         - project
         - update
@@ -68,22 +80,22 @@ upgrade:
         - /cnab/app/project.yaml
 
   - brig:
-      description: 'Update Brigade v2 Project {{ installation.name }} secrets'
+      description: 'Update Brigade v2 Project secrets: {{ bundle.parameters.project-name }}'
       arguments:
         - project
         - secrets
         - set
         - -p
-        - '{{ installation.name }}'
+        - '{{ bundle.parameters.project-name }}'
         - -f
         - /cnab/app/secrets.yaml
 
 uninstall:
   - brig:
-      description: Delete Brigade v2 project
+      description: 'Delete Brigade v2 project: {{ bundle.parameters.project-name }}'
       arguments:
         - project
         - delete
         - -p
-        - '{{ installation.name }}'
+        - '{{ bundle.parameters.project-name }}'
         - --yes

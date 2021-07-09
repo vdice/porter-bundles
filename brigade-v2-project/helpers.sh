@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-set -euox pipefail
+set -euo pipefail
 
-prep-project() {
-  export project=$1
-  yq e -i '.metadata.id = env(project)' /cnab/app/project.yaml
+get-project-name() {
+  printf $(yq e '.metadata.id' /cnab/app/project.yaml) > /cnab/app/project-name
 }
 
 # Call the requested function and pass the arguments as-is
