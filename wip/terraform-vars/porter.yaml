@@ -1,0 +1,57 @@
+name: terraform-vars
+version: 0.1.0
+registry: ghcr.io/vdice
+
+mixins:
+  - terraform:
+      clientVersion: 1.0.2
+
+parameters:
+  - name: tfstate
+    type: file
+    path: /cnab/app/terraform/terraform.tfstate
+    source:
+      output: tfstate
+  - name: tfvars
+    type: file
+    path: /cnab/app/terraform/terraform.tfvars
+    source:
+      output: tfvars
+
+outputs:
+  - name: tfstate
+    type: file
+    path: /cnab/app/terraform/terraform.tfstate
+  - name: tfvars
+    type: file
+    path: /cnab/app/terraform/terraform.tfvars
+
+install:
+  - terraform:
+      description: "Install Terraform assets"
+
+upgrade:
+  - terraform:
+      description: "Upgrade Terraform assets"
+
+show:
+  - terraform:
+      description: "Invoke 'terraform show'"
+
+plan:
+  - terraform:
+      description: "Invoke 'terraform plan'"
+      flags:
+        no-color:
+        out: "/dev/null"
+
+printVersion:
+  - terraform:
+      description: "Invoke 'terraform version'"
+      arguments: 
+        - "version"
+
+uninstall:
+  - terraform:
+      description: "Uninstall Terraform assets"
+
