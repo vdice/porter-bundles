@@ -21,7 +21,8 @@ parameters:
 
 mixins:
   - exec
-  - docker-compose
+  - docker-compose:
+      clientVersion: 1.29.2
   - docker:
       clientVersion: 20.10.7
 

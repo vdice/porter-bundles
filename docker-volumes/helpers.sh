@@ -7,7 +7,7 @@ create_data_volume() {
     docker volume create cnab-app-volume
 
   # Add files from /cnab/app to volume via a helper container
-  docker run -v cnab-app-volume:/data --name helper busybox true
+  docker create -v cnab-app-volume:/data --name helper busybox true
   docker cp /cnab/app/echo.txt helper:/data
   docker rm helper > /dev/null
 }
