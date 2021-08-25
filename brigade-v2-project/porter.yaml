@@ -7,7 +7,7 @@ dockerfile: Dockerfile.tmpl
 mixins:
   - exec
   - brig:
-      clientVersion: v2.0.0-alpha.5
+      clientVersion: v2.0.0-beta.2
 
 parameters:
   - name: project-name

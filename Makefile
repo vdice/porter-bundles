@@ -5,7 +5,7 @@ MAKE_OPTS ?= --no-print-directory
 
 PORTER_HOME ?= $(BASE_DIR)/bin
 
-default: clean bootstrap build-bundle
+default: clean build-bundle
 
 ## Targets for building, validating and publishing bundles ##
 REGISTRY ?= ghcr.io/vdice

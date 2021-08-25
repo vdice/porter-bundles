@@ -6,7 +6,7 @@ dockerfile: Dockerfile.tmpl
 
 mixins:
   - helm3:
-      clientVersion: v3.5.4
+      clientVersion: v3.6.3
 
 credentials:
   - name: kubeconfig
