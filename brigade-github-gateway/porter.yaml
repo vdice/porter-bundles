@@ -6,7 +6,7 @@ dockerfile: Dockerfile.tmpl
 
 mixins:
   - brig:
-      clientVersion: v2.0.0-alpha.5
+      clientVersion: v2.0.0-beta.2
   - exec
   - helm3:
       clientVersion: v3.6.1
@@ -14,7 +14,7 @@ mixins:
 parameters:
   - name: namespace
     sensitive: false
-    default: '{{ installation.name }}'
+    default: brigade-github-gateway
     type: string
   - name: chart-values
     sensitive: false
@@ -23,7 +23,7 @@ parameters:
     type: string
   - name: chart-version
     type: string
-    default: v0.1.0
+    default: v0.2.0
 
 credentials:
   - name: kubeconfig

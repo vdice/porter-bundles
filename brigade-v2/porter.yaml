@@ -12,7 +12,7 @@ mixins:
 parameters:
   - name: namespace
     sensitive: false
-    default: '{{ installation.name }}'
+    default: brigade2
     type: string
   - name: chart-values
     sensitive: false
